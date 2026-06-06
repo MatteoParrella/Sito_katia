@@ -4,6 +4,7 @@
   },
   "rewrites": [
     { "source": "/annulla", "destination": "/annulla.html" },
-    { "source": "/admin",   "destination": "/admin.html"   }
+    { "source": "/admin",   "destination": "/admin.html"   },
+    { "source": "/privacy", "destination": "/privacy.html" }
   ]
 }

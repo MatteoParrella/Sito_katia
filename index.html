@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Katia Teruzzi — Pilates e Movimento Consapevole</title>
+  <title>Katia Teruzzi — Pilates e Movimento Consapevole · Arcore, Monza e Brianza</title>
+  <meta name="description" content="Lezioni di Pilates, Odaka Yoga, Nia e circuiti in piccoli gruppi ad Arcore. Prenota online il tuo posto — massimo 12 partecipanti, conferma immediata.">
+  <meta property="og:title" content="Katia Teruzzi — Pilates e Movimento Consapevole">
+  <meta property="og:description" content="Lezioni in piccoli gruppi ad Arcore. Pilates, Odaka Yoga, Nia e circuiti. Prenota online.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#4a7d7a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
@@ -753,6 +758,7 @@
 
 <footer>
   <p>© 2025 Katia Teruzzi — Pilates e Movimento Consapevole · Arcore, Monza e Brianza</p>
+  <p style="margin-top:6px"><a href="/privacy" style="color:oklch(55% 0.04 148)">Privacy Policy</a></p>
 </footer>
 
 <!-- ── REACT: Booking Form (collegato al database via API) ── -->
@@ -1107,7 +1113,7 @@
               onChange={e => set('privacy', e.target.checked)}
             />
             <label htmlFor="privacy" style={{cursor:'pointer'}}>
-              Compilando il modulo accetti che i dati inseriti vengano utilizzati per gestire la tua prenotazione.
+              Accetto che i dati inseriti vengano utilizzati per gestire la mia prenotazione, come descritto nella <a href="/privacy" target="_blank" style={{color:'var(--sage-600)'}}>Privacy Policy</a>.
             </label>
           </div>
           {errors.privacy && <p className="form-err" style={{marginTop:'6px'}}>{errors.privacy}</p>}

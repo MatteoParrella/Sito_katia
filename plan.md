@@ -769,7 +769,7 @@ Test:
 - controllo contenuto email;
 - controllo spam/promozioni.
 
-### Iterazione 8 — Rifinitura e contenuti finali
+### Iterazione 8 — Rifinitura e contenuti finali ✅ COMPLETATA (2026-06-06)
 
 Obiettivo: preparare il sito per la presentazione finale.
 
