@@ -372,11 +372,17 @@
   let currentMonday    = getCurrentMonday();
   let weekData         = null; // { prevMonday, nextMonday, label }
 
+  function toLocalDateStr(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
   function getCurrentMonday() {
     const d = new Date(); d.setHours(0,0,0,0);
-    const day = d.getDay();
-    d.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
-    return d.toISOString().slice(0,10);
+    const day = d.getDay(); // 0=Dom,1=Lun,...,6=Sab
+    // Jump to next Monday (or stay if today IS Monday)
+    // Formula: (8 - day) % 7 gives 0 for Monday, 1 for Sunday, 2 for Saturday, etc.
+    d.setDate(d.getDate() + (8 - day) % 7);
+    return toLocalDateStr(d);
   }
 
   // ── Init ─────────────────────────────────────────────────
