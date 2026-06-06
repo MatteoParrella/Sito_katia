@@ -794,16 +794,16 @@
     const [fullLesson,  setFullLesson]  = useState('');
     const [serverError, setServerError] = useState('');
     const [fields, setFields] = useState({
-      lesson_id: '', nome: '', cognome: '', email: '', telefono: '', privacy: false
+      lesson_key: '', nome: '', cognome: '', email: '', telefono: '', privacy: false
     });
     const [errors, setErrors] = useState({});
     const [hasError, setHasError] = useState(false);
 
-    // Load lessons on mount
+    // Load upcoming lesson instances on mount
     useEffect(() => {
       fetch('/api/lessons')
         .then(r => r.json())
-        .then(data => { setLessons(data.lessons || []); setLoadingLessons(false); })
+        .then(data => { setLessons(data.upcoming || []); setLoadingLessons(false); })
         .catch(() => { setLessons([]); setLoadingLessons(false); });
     }, []);
 
@@ -814,13 +814,13 @@
 
     const validate = () => {
       const e = {};
-      if (!fields.lesson_id)          e.lesson_id = 'Seleziona una lezione';
-      if (!fields.nome.trim())         e.nome      = 'Campo obbligatorio';
-      if (!fields.cognome.trim())      e.cognome   = 'Campo obbligatorio';
-      if (!fields.email.trim())        e.email     = 'Campo obbligatorio';
+      if (!fields.lesson_key)          e.lesson_key = 'Seleziona una lezione';
+      if (!fields.nome.trim())          e.nome       = 'Campo obbligatorio';
+      if (!fields.cognome.trim())       e.cognome    = 'Campo obbligatorio';
+      if (!fields.email.trim())         e.email      = 'Campo obbligatorio';
       else if (!/\S+@\S+\.\S+/.test(fields.email)) e.email = 'Formato non valido';
-      if (!fields.telefono.trim())     e.telefono  = 'Campo obbligatorio';
-      if (!fields.privacy)             e.privacy   = 'Accetta la privacy per continuare';
+      if (!fields.telefono.trim())      e.telefono   = 'Campo obbligatorio';
+      if (!fields.privacy)              e.privacy    = 'Accetta la privacy per continuare';
       return e;
     };
 
@@ -831,12 +831,16 @@
       setHasError(false);
       setSubmitting(true);
 
+      const [lesson_id, lesson_date] = fields.lesson_key.split('|');
+      const selected = lessons.find(l => l.lesson_id === lesson_id && l.lesson_date === lesson_date);
+
       try {
         const res = await fetch('/api/bookings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            lesson_id:  fields.lesson_id,
+            lesson_id,
+            lesson_date,
             first_name: fields.nome,
             last_name:  fields.cognome,
             email:      fields.email,
@@ -847,35 +851,28 @@
         const data = await res.json();
 
         if (res.status === 400 && data.fields) {
-          // Server-side validation errors
           const mapped = {};
-          if (data.fields.lesson_id)  mapped.lesson_id = data.fields.lesson_id;
-          if (data.fields.first_name) mapped.nome      = data.fields.first_name;
-          if (data.fields.last_name)  mapped.cognome   = data.fields.last_name;
-          if (data.fields.email)      mapped.email     = data.fields.email;
-          if (data.fields.phone)      mapped.telefono  = data.fields.phone;
+          if (data.fields.lesson_id || data.fields.lesson_date) mapped.lesson_key = 'Seleziona una lezione valida';
+          if (data.fields.first_name) mapped.nome     = data.fields.first_name;
+          if (data.fields.last_name)  mapped.cognome  = data.fields.last_name;
+          if (data.fields.email)      mapped.email    = data.fields.email;
+          if (data.fields.phone)      mapped.telefono = data.fields.phone;
           setErrors(mapped);
           setHasError(true);
           return;
         }
 
-        if (!res.ok) {
-          setServerError(data.error || 'Errore del server');
-          setScreen('error');
-          return;
-        }
+        if (!res.ok) { setServerError(data.error || 'Errore del server'); setScreen('error'); return; }
 
         if (data.status === 'full') {
-          const lesson = lessons.find(l => l.id === fields.lesson_id);
-          setFullLesson(lesson ? `${lesson.day_of_week} ${lesson.time} — ${lesson.course_name}` : 'la lezione selezionata');
+          setFullLesson(selected ? selected.label : 'la lezione selezionata');
           setScreen('full');
           return;
         }
 
         if (data.status === 'confirmed') {
-          const lesson = lessons.find(l => l.id === fields.lesson_id);
           setConfirmed({
-            lessonLabel: lesson ? `${lesson.day_of_week} ${lesson.time} — ${lesson.course_name}` : 'la lezione',
+            lessonLabel: selected ? selected.label : 'la lezione',
             nome:        fields.nome,
             cancelToken: data.cancel_token,
           });
@@ -892,7 +889,7 @@
 
     const reset = () => {
       setScreen('form');
-      setFields({ lesson_id:'', nome:'', cognome:'', email:'', telefono:'', privacy:false });
+      setFields({ lesson_key:'', nome:'', cognome:'', email:'', telefono:'', privacy:false });
       setErrors({});
       setHasError(false);
       setConfirmed(null);
@@ -911,19 +908,19 @@
         <div className="form-field">
           <label className="form-label">Seleziona lezione</label>
           <select
-            className={`form-select${errors.lesson_id ? ' err' : ''}`}
-            value={fields.lesson_id}
-            onChange={e => set('lesson_id', e.target.value)}
+            className={`form-select${errors.lesson_key ? ' err' : ''}`}
+            value={fields.lesson_key}
+            onChange={e => set('lesson_key', e.target.value)}
             disabled={loadingLessons}
           >
-            <option value="">{loadingLessons ? 'Caricamento lezioni…' : '— Scegli giorno, orario e tipo —'}</option>
+            <option value="">{loadingLessons ? 'Caricamento lezioni…' : '— Scegli data, orario e tipo —'}</option>
             {lessons.map(l => (
-              <option key={l.id} value={l.id}>
-                {l.day_of_week} {l.time} — {l.course_name}
+              <option key={`${l.lesson_id}|${l.lesson_date}`} value={`${l.lesson_id}|${l.lesson_date}`}>
+                {l.label}
               </option>
             ))}
           </select>
-          {errors.lesson_id && <p className="form-err">{errors.lesson_id}</p>}
+          {errors.lesson_key && <p className="form-err">{errors.lesson_key}</p>}
         </div>
 
         <div className="form-row">
