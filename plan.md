@@ -665,7 +665,7 @@ Test:
 - privacy non accettata;
 - generazione token annullamento.
 
-### Iterazione 4 — Blocco automatico 12 posti
+### Iterazione 4 — Blocco automatico 12 posti ✅ COMPLETATA (2026-06-06)
 
 Obiettivo: impedire prenotazioni oltre il limite.
 
