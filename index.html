@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katia Teruzzi — Pilates e Movimento Consapevole</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      oklch(97.5% 0.009 88);
+      --cream-alt:  oklch(95%   0.016 105);
+      --sage-50:    oklch(96%   0.027 148);
+      --sage-100:   oklch(90%   0.055 148);
+      --sage-200:   oklch(80%   0.080 148);
+      --sage-400:   oklch(65%   0.098 148);
+      --sage-600:   oklch(48%   0.092 148);
+      --sage-800:   oklch(32%   0.072 148);
+      --sage-900:   oklch(22%   0.055 148);
+      --brown-50:   oklch(96%   0.016 72);
+      --brown-100:  oklch(92%   0.024 72);
+      --brown-300:  oklch(76%   0.040 72);
+      --brown-600:  oklch(50%   0.052 72);
+      --brown-800:  oklch(34%   0.045 72);
+      --text:       oklch(21%   0.016 78);
+      --text-mid:   oklch(47%   0.020 78);
+      --text-light: oklch(64%   0.016 78);
+      --white: #ffffff;
+      --r-s:  8px;  --r-m: 16px;  --r-l: 24px;  --r-xl: 999px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--cream); color: var(--text);
+      line-height: 1.7; font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1,h2,h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; }
+    strong { font-weight: 500; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 64px; padding: 0 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: oklch(97.5% 0.009 88 / 0.9); backdrop-filter: blur(14px);
+      border-bottom: 1px solid oklch(90% 0.055 148 / 0.35);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif; font-size: 19px;
+      font-style: italic; color: var(--sage-800); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-mid); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sage-600); }
+    .nav-cta {
+      background: var(--sage-600); color: var(--white);
+      padding: 9px 22px; border-radius: var(--r-xl);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+      text-decoration: none; transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--sage-800); transform: translateY(-1px); }
+    .nav-toggle {
+      display: none; background: none; border: none;
+      cursor: pointer; padding: 4px; flex-direction: column; gap: 5px;
+    }
+    .nav-toggle span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--sage-800); border-radius: 2px;
+      transition: all 0.3s;
+    }
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 64px; left: 0; right: 0;
+        background: oklch(97.5% 0.009 88 / 0.97);
+        border-bottom: 1px solid oklch(90% 0.055 148 / 0.35);
+        padding: 20px 36px; gap: 18px;
+      }
+      .nav-toggle { display: flex; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh; position: relative;
+      display: flex; align-items: flex-end; justify-content: flex-start;
+      overflow: hidden;
+    }
+    .hero-img {
+      position: absolute; inset: 0; overflow: hidden;
+    }
+    .hero-img img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      transform-origin: center; transition: transform 8s ease;
+    }
+    .hero:hover .hero-img img { transform: scale(1.03); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top,
+        oklch(20% 0.055 148 / 0.85) 0%,
+        oklch(20% 0.055 148 / 0.45) 50%,
+        oklch(20% 0.055 148 / 0.15) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 10;
+      max-width: 700px; padding: 0 52px 80px;
+    }
+    .hero-eyebrow {
+      font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+      color: oklch(85% 0.055 148 / 0.9); margin-bottom: 18px; display: block;
+    }
+    .hero-name {
+      font-size: clamp(52px, 8vw, 92px); font-style: italic; font-weight: 300;
+      line-height: 1.0; color: var(--white); margin-bottom: 18px;
+      text-shadow: 0 2px 28px oklch(0% 0 0 / 0.2);
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.5vw, 24px);
+      color: oklch(95% 0.010 90 / 0.88); margin-bottom: 16px;
+    }
+    .hero-desc {
+      font-size: 14px; font-weight: 300; line-height: 1.8;
+      color: oklch(92% 0.008 90 / 0.75); max-width: 480px; margin-bottom: 40px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-hero-p {
+      background: var(--white); color: var(--sage-800);
+      padding: 14px 32px; border-radius: var(--r-xl);
+      font-size: 13px; font-weight: 500; letter-spacing: 0.06em;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 20px oklch(0% 0 0 / 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-hero-p:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(0% 0 0 / 0.25); }
+    .btn-hero-s {
+      background: transparent; color: var(--white);
+      padding: 14px 30px; border-radius: var(--r-xl);
+      font-size: 13px; letter-spacing: 0.06em;
+      text-decoration: none; border: 1.5px solid oklch(100% 0 0 / 0.45);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-hero-s:hover { background: oklch(100% 0 0 / 0.1); border-color: white; }
+    .hero-scroll {
+      position: absolute; right: 48px; bottom: 52px; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: oklch(90% 0.01 90 / 0.5); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, oklch(90% 0.01 90 / 0.4), transparent);
+      animation: scrollDrop 2.2s ease-in-out infinite;
+    }
+    @keyframes scrollDrop {
+      0%,100% { opacity: .5; transform: scaleY(1); }
+      50%      { opacity: 1;  transform: scaleY(0.65); }
+    }
+    @media (max-width: 600px) {
+      .hero-content { padding: 0 24px 64px; }
+      .hero-scroll { display: none; }
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 108px 0; }
+    .section-alt  { background: var(--sage-50); }
+    .section-warm { background: var(--cream-alt); }
+    .section-sage { background: var(--sage-100); }
+    .section-dark { background: var(--sage-900); }
+
+    .s-tag { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sage-600); margin-bottom: 12px; }
+    .s-title { font-size: clamp(36px, 5vw, 52px); font-style: italic; color: var(--sage-900); line-height: 1.1; margin-bottom: 16px; }
+    .s-desc { font-size: 14px; color: var(--text-mid); line-height: 1.85; }
+    .s-header-center { text-align: center; margin-bottom: 64px; }
+    .s-header-center .s-desc { max-width: 440px; margin: 0 auto; }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid; grid-template-columns: 380px 1fr; gap: 80px; align-items: center;
+    }
+    .about-portrait-wrap { position: relative; }
+    .about-portrait {
+      width: 100%; aspect-ratio: 3/4; border-radius: var(--r-l); overflow: hidden;
+      box-shadow: 0 20px 60px oklch(0% 0 0 / 0.1), 0 4px 16px oklch(0% 0 0 / 0.06);
+    }
+    .about-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .about-portrait-deco {
+      position: absolute; bottom: -24px; right: -24px; z-index: -1;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: var(--sage-100);
+    }
+    .about-role {
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--sage-600); margin-bottom: 24px; margin-top: 4px;
+    }
+    .about-bio {
+      font-size: 15px; color: var(--text-mid); line-height: 1.85;
+      margin-bottom: 32px;
+    }
+    .about-quote {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+      font-size: clamp(20px, 2.5vw, 26px); line-height: 1.4;
+      color: var(--sage-800); padding-left: 22px;
+      border-left: 2px solid var(--sage-400);
+    }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+    .about-tag {
+      font-size: 11px; letter-spacing: 0.06em; padding: 6px 16px;
+      border-radius: var(--r-xl); background: var(--sage-100); color: var(--sage-800);
+    }
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-portrait { max-width: 320px; aspect-ratio: 4/3; margin: 0 auto; }
+      .about-portrait-deco { display: none; }
+    }
+
+    /* ── COURSES ── */
+    .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; max-width: 820px; margin: 0 auto; }
+    .course-card {
+      background: var(--white); border-radius: var(--r-l); overflow: hidden;
+      border: 1px solid oklch(90% 0.055 148 / 0.35);
+      box-shadow: 0 2px 12px oklch(0% 0 0 / 0.05);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .course-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px oklch(0% 0 0 / 0.1); }
+    .course-card-img { height: 220px; overflow: hidden; }
+    .course-card-img img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      transition: transform 0.6s ease;
+    }
+    .course-card:hover .course-card-img img { transform: scale(1.04); }
+    .course-card-body { padding: 36px 32px 32px; }
+    .course-name { font-size: 32px; font-style: italic; color: var(--sage-800); margin-bottom: 12px; }
+    .course-desc { font-size: 14px; color: var(--text-mid); line-height: 1.75; margin-bottom: 20px; }
+    .course-benefit {
+      font-size: 12px; font-weight: 500; color: var(--sage-600); letter-spacing: 0.04em;
+      margin-bottom: 28px; display: flex; align-items: center; gap: 10px;
+    }
+    .course-benefit::before { content: ''; width: 22px; height: 1px; background: var(--sage-400); flex-shrink: 0; }
+    .btn-book {
+      display: inline-block; padding: 11px 26px; border-radius: var(--r-xl);
+      background: var(--sage-100); color: var(--sage-800);
+      font-size: 13px; font-weight: 500; letter-spacing: 0.06em;
+      text-decoration: none; border: none; cursor: pointer; font-family: inherit;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-book:hover { background: var(--sage-200); transform: translateY(-1px); }
+
+    /* ── MOOD STRIP ── */
+    .mood-strip { height: 340px; overflow: hidden; position: relative; }
+    .mood-strip img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      transform-origin: center; transition: transform 8s ease;
+    }
+    .mood-strip:hover img { transform: scale(1.03); }
+    .mood-strip-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, oklch(22% 0.055 148 / 0.25), transparent 40%, transparent 60%, oklch(22% 0.055 148 / 0.25));
+      pointer-events: none;
+    }
+
+    /* ── SCHEDULE ── */
+    .schedule-wrap { max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+    .sched-day {
+      background: var(--white); border-radius: var(--r-m); overflow: hidden;
+      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      box-shadow: 0 1px 4px oklch(0% 0 0 / 0.03);
+    }
+    .sched-day-name {
+      padding: 12px 24px; background: oklch(96.5% 0.022 148);
+      border-bottom: 1px solid oklch(90% 0.055 148 / 0.25);
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-light);
+    }
+    .sched-slot {
+      display: flex; align-items: center; gap: 18px; padding: 15px 24px;
+      border-bottom: 1px solid oklch(90% 0.055 148 / 0.15);
+      transition: background 0.15s;
+    }
+    .sched-slot:last-child { border-bottom: none; }
+    .sched-slot:hover { background: oklch(98% 0.015 148); }
+    .sched-time {
+      font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500;
+      color: var(--text); min-width: 68px;
+    }
+    .sched-badge {
+      display: inline-flex; align-items: center; padding: 4px 14px; border-radius: var(--r-xl);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+    }
+    .sched-badge.pilates { background: var(--sage-100); color: var(--sage-800); }
+    .sched-badge.mix     { background: var(--brown-100); color: var(--brown-800); }
+    .sched-note { font-size: 10px; color: var(--text-light); letter-spacing: 0.04em; }
+    .sched-spacer { flex: 1; }
+    .sched-book-link { font-size: 11px; color: var(--sage-600); text-decoration: none; letter-spacing: 0.06em; opacity: 0; transition: opacity 0.2s; white-space: nowrap; }
+    .sched-slot:hover .sched-book-link { opacity: 1; }
+
+    /* ── INFO ── */
+    .info-card {
+      max-width: 620px; margin: 0 auto;
+      background: var(--white); border-radius: var(--r-l);
+      padding: 56px 52px; text-align: center;
+      border: 1px solid var(--sage-100);
+      box-shadow: 0 2px 16px oklch(0% 0 0 / 0.05);
+    }
+    .info-icon-wrap {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--sage-100); margin: 0 auto 28px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .info-title { font-size: 32px; font-style: italic; color: var(--sage-800); margin-bottom: 18px; }
+    .info-text { font-size: 15px; color: var(--text-mid); line-height: 1.9; }
+    .info-bullets { display: flex; justify-content: center; gap: 40px; margin-top: 36px; flex-wrap: wrap; }
+    .info-bullet { text-align: center; }
+    .info-bullet-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 40px; font-style: italic;
+      color: var(--sage-600); line-height: 1; margin-bottom: 4px;
+    }
+    .info-bullet-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); }
+    @media (max-width: 600px) { .info-card { padding: 36px 28px; } }
+
+    /* ── BOOKING FORM ── */
+    .booking-card {
+      background: var(--white); border-radius: var(--r-l);
+      padding: 52px; max-width: 560px; margin: 0 auto;
+      box-shadow: 0 4px 28px oklch(0% 0 0 / 0.07);
+      border: 1px solid oklch(90% 0.055 148 / 0.3);
+    }
+    .form-field { margin-bottom: 20px; }
+    .form-label { display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; }
+    .form-input, .form-select {
+      width: 100%; padding: 12px 15px; border-radius: var(--r-s);
+      border: 1.5px solid oklch(90% 0.055 148 / 0.5);
+      font-size: 15px; font-family: inherit; color: var(--text);
+      background: var(--cream); outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--sage-400); background: var(--white); }
+    .form-input.err, .form-select.err { border-color: oklch(58% 0.14 25); background: oklch(97.5% 0.015 25); }
+    .form-err { font-size: 11px; color: oklch(48% 0.13 25); margin-top: 4px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+    .form-privacy { display: flex; align-items: flex-start; gap: 10px; margin-top: 4px; font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+    .form-privacy input { width: 15px; height: 15px; min-width: 15px; margin-top: 2px; accent-color: var(--sage-600); }
+    .btn-submit {
+      width: 100%; padding: 15px; border-radius: var(--r-xl);
+      background: var(--sage-600); color: var(--white); border: none;
+      font-size: 14px; font-weight: 500; font-family: inherit; letter-spacing: 0.06em;
+      cursor: pointer; margin-top: 10px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-submit:hover { background: var(--sage-800); transform: translateY(-1px); box-shadow: 0 4px 18px oklch(0% 0 0 / 0.14); }
+    .form-alert { background: oklch(96.5% 0.018 25); border: 1px solid oklch(80% 0.07 25); border-radius: var(--r-s); padding: 12px 16px; font-size: 13px; color: oklch(40% 0.12 25); margin-bottom: 22px; }
+    .state-wrap { text-align: center; padding: 56px 32px; }
+    .state-icon { width: 72px; height: 72px; border-radius: 50%; font-size: 26px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+    .state-icon.ok  { background: var(--sage-100); }
+    .state-icon.nok { background: var(--brown-100); }
+    .state-icon.can { background: var(--sage-50); }
+    .state-title { font-size: 28px; font-style: italic; color: var(--sage-800); margin-bottom: 14px; }
+    .state-desc { font-size: 14px; color: var(--text-mid); line-height: 1.8; max-width: 360px; margin: 0 auto 32px; }
+    .state-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-ghost { display: inline-block; padding: 11px 24px; border-radius: var(--r-xl); background: var(--sage-100); color: var(--sage-800); border: none; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; letter-spacing: 0.06em; text-decoration: none; transition: background 0.2s; }
+    .btn-ghost:hover { background: var(--sage-200); }
+    .btn-ghost-warm { display: inline-block; padding: 11px 24px; border-radius: var(--r-xl); background: var(--brown-100); color: var(--brown-800); border: none; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; letter-spacing: 0.06em; text-decoration: none; transition: background 0.2s; }
+    .btn-ghost-warm:hover { background: var(--brown-300); }
+    @media (max-width: 600px) { .booking-card { padding: 32px 22px; } }
+
+    /* ── CONTACTS ── */
+    .contacts-title { font-size: clamp(36px, 5vw, 52px); font-style: italic; color: oklch(92% 0.018 90); text-align: center; margin-bottom: 56px; }
+    .contacts-grid { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .contact-card {
+      display: flex; align-items: center; gap: 14px; padding: 18px 20px;
+      border-radius: var(--r-m); border: 1px solid oklch(40% 0.055 148 / 0.3);
+      text-decoration: none; color: oklch(78% 0.025 90); cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .contact-card:hover { background: oklch(30% 0.065 148 / 0.5); color: oklch(94% 0.012 90); border-color: oklch(55% 0.09 148 / 0.5); }
+    .contact-ico { width: 38px; height: 38px; border-radius: var(--r-s); background: oklch(32% 0.065 148 / 0.55); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; }
+    .contact-val { font-size: 13px; font-weight: 500; margin-top: 2px; }
+
+    footer { background: var(--sage-900); border-top: 1px solid oklch(30% 0.065 148); padding: 24px; text-align: center; font-size: 11px; color: oklch(46% 0.04 148); letter-spacing: 0.08em; }
+
+    /* ── DIVIDER ── */
+    .section-divider { display: flex; align-items: center; gap: 18px; max-width: 200px; margin: 0 auto; padding: 0 32px; }
+    .section-divider-line { flex: 1; height: 1px; background: var(--sage-200); }
+    .section-divider-leaf { color: var(--sage-400); font-size: 18px; transform: rotate(45deg); line-height: 1; }
+
+    /* ── FADE IN ── */
+    .fi { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .fi.vis { opacity: 1; transform: none; }
+    .fi.d1 { transition-delay: 0.1s; } .fi.d2 { transition-delay: 0.2s; }
+    .fi.d3 { transition-delay: 0.3s; } .fi.d4 { transition-delay: 0.4s; }
+    .fi.d5 { transition-delay: 0.5s; }
+
+    @media (max-width: 768px) { .section { padding: 80px 0; } }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#top" class="nav-logo">Katia Teruzzi</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#chi-sono">Chi sono</a></li>
+    <li><a href="#corsi">Corsi</a></li>
+    <li><a href="#orari">Orari</a></li>
+    <li><a href="#prenota">Prenota</a></li>
+    <li><a href="#contatti">Contatti</a></li>
+  </ul>
+  <a href="#prenota" class="nav-cta">Prenota</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="top">
+  <div class="hero-img">
+    <img
+      src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1920&q=85&fit=crop&crop=center"
+      alt="Lezione di Pilates"
+      loading="eager"
+    >
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Pilates · Odaka Yoga · Nia · Circuiti · Arcore, Monza e Brianza</span>
+    <h1 class="hero-name">Katia<br>Teruzzi</h1>
+    <p class="hero-tagline">Pilates e movimento consapevole</p>
+    <p class="hero-desc">Lezioni in piccoli gruppi, con un approccio su misura. Ogni lezione è pensata per te, per il tuo corpo, per come ti senti oggi.</p>
+    <div class="hero-actions">
+      <a href="#prenota" class="btn-hero-p">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>
+        Prenota la tua lezione
+      </a>
+      <a href="https://wa.me/393485525084" target="_blank" rel="noopener" class="btn-hero-s">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+        Contatta su WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>scorri</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── CHI SONO ── -->
+<section class="section section-warm" id="chi-sono">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-portrait-wrap fi">
+        <div class="about-portrait">
+          <img
+            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80&fit=crop&crop=top"
+            alt="Lezione di Pilates in studio"
+            loading="lazy"
+          >
+        </div>
+        <div class="about-portrait-deco"></div>
+      </div>
+      <div class="fi d2">
+        <p class="s-tag">Chi sono</p>
+        <h2 class="s-title">Katia Teruzzi</h2>
+        <p class="about-role">Odaka Yoga® RYT250 · Pilates Balanced body® · Nia® · Circuiti personalizzati</p>
+        <p class="about-bio">Ho scoperto il movimento come linguaggio — un modo per ascoltare il corpo, non solo allenarlo. Ogni lezione che propongo unisce la precisione del Pilates, la fluidità dell'Odaka Yoga, l'energia del Nia e la funzionalità dei circuiti. Un approccio su misura, che cambia e si adatta, perché ogni giorno sei diversa.</p>
+        <blockquote class="about-quote">"Non è solo esercizio. È movimento consapevole."</blockquote>
+        <div class="about-tags">
+          <span class="about-tag">Pilates Balanced body®</span>
+          <span class="about-tag">Odaka Yoga® RYT250</span>
+          <span class="about-tag">Nia®</span>
+          <span class="about-tag">Circuiti</span>
+          <span class="about-tag">Piccoli gruppi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CORSI ── -->
+<section class="section" id="corsi">
+  <div class="container">
+    <div class="s-header-center fi">
+      <p class="s-tag">I corsi</p>
+      <h2 class="s-title">Scegli il tuo percorso</h2>
+      <p class="s-desc">Due proposte in piccoli gruppi — massimo 12 persone — per un'attenzione sempre personalizzata, in un'atmosfera serena e accogliente.</p>
+    </div>
+    <div class="courses-grid">
+      <div class="course-card fi d1">
+        <div class="course-card-img">
+          <img
+            src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80&fit=crop&crop=center"
+            alt="Lezione di Pilates"
+            loading="lazy"
+          >
+        </div>
+        <div class="course-card-body">
+          <h3 class="course-name">Pilates</h3>
+          <p class="course-desc">Un metodo completo che allena il corpo in profondità. Lavoriamo sul centro, sulla respirazione e sul controllo del movimento per migliorare postura, equilibrio e consapevolezza corporea — a ogni livello di pratica.</p>
+          <p class="course-benefit">Postura, forza profonda e consapevolezza</p>
+          <a href="#prenota" class="btn-book">Prenota →</a>
+        </div>
+      </div>
+      <div class="course-card fi d2">
+        <div class="course-card-img">
+          <img
+            src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&fit=crop&crop=center"
+            alt="Lezione Mix"
+            loading="lazy"
+          >
+        </div>
+        <div class="course-card-body">
+          <h3 class="course-name">Mix</h3>
+          <p class="course-desc">Ogni settimana una disciplina diversa, a rotazione: <strong>Pilates</strong>, <strong>Odaka Yoga</strong>, <strong>Nia</strong> o <strong>Circuiti personalizzati</strong>. Un programma vario che lavora su mobilità, coordinazione, energia e benessere globale del corpo.</p>
+          <p class="course-benefit">Varietà, equilibrio e benessere globale</p>
+          <a href="#prenota" class="btn-book">Prenota →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MOOD STRIP ── -->
+<div class="mood-strip fi">
+  <img
+    src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=1920&q=80&fit=crop&crop=center"
+    alt="Lezione di gruppo in studio"
+    loading="lazy"
+  >
+  <div class="mood-strip-overlay"></div>
+</div>
+
+<!-- ── ORARI ── -->
+<section class="section section-alt" id="orari">
+  <div class="container">
+    <div class="s-header-center fi">
+      <p class="s-tag">Orari settimanali</p>
+      <h2 class="s-title">Trova il tuo momento</h2>
+      <p class="s-desc">Lezioni distribuite nella settimana per adattarsi ai tuoi impegni e al tuo ritmo. Da settembre 2025.</p>
+    </div>
+    <div class="schedule-wrap">
+      <div class="sched-day fi d1">
+        <div class="sched-day-name">Lunedì</div>
+        <div>
+          <div class="sched-slot">
+            <span class="sched-time">18:00</span>
+            <span class="sched-badge mix">Mix</span>
+            <span class="sched-spacer"></span>
+            <a href="#prenota" class="sched-book-link">Prenota →</a>
+          </div>
+          <div class="sched-slot">
+            <span class="sched-time">19:00</span>
+            <span class="sched-badge pilates">Pilates</span>
+            <span class="sched-spacer"></span>
+            <a href="#prenota" class="sched-book-link">Prenota →</a>
+          </div>
+        </div>
+      </div>
+      <div class="sched-day fi d2">
+        <div class="sched-day-name">Martedì</div>
+        <div>
+          <div class="sched-slot">
+            <span class="sched-time">10:00</span>
+            <span class="sched-badge pilates">Pilates</span>
+            <span class="sched-spacer"></span>
+            <a href="#prenota" class="sched-book-link">Prenota →</a>
+          </div>
+        </div>
+      </div>
+      <div class="sched-day fi d3">
+        <div class="sched-day-name">Mercoledì</div>
+        <div>
+          <div class="sched-slot">
+            <span class="sched-time">18:00</span>
+            <span class="sched-badge pilates">Pilates</span>
+            <span class="sched-spacer"></span>
+            <a href="#prenota" class="sched-book-link">Prenota →</a>
+          </div>
+          <div class="sched-slot">
+            <span class="sched-time">19:00</span>
+            <span class="sched-badge mix">Mix</span>
+            <span class="sched-spacer"></span>
+            <a href="#prenota" class="sched-book-link">Prenota →</a>
+          </div>
+        </div>
+      </div>
+      <div class="sched-day fi d4">
+        <div class="sched-day-name">Giovedì</div>
+        <div>
+          <div class="sched-slot">
+            <span class="sched-time">10:00</span>
+            <span class="sched-badge pilates">Pilates</span>
+            <span class="sched-spacer"></span>
+            <a href="#prenota" class="sched-book-link">Prenota →</a>
+          </div>
+          <div class="sched-slot">
+            <span class="sched-time">18:00</span>
+            <span class="sched-badge mix">Mix</span>
+            <span class="sched-note">da concordare</span>
+            <span class="sched-spacer"></span>
+          </div>
+          <div class="sched-slot">
+            <span class="sched-time">19:00</span>
+            <span class="sched-badge pilates">Pilates</span>
+            <span class="sched-spacer"></span>
+            <a href="#prenota" class="sched-book-link">Prenota →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INFO ── -->
+<section class="section" id="info">
+  <div class="container">
+    <div class="info-card fi">
+      <div class="info-icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="oklch(48% 0.092 148)" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 8v4l2.5 2.5"></path>
+        </svg>
+      </div>
+      <h3 class="info-title">Come funziona</h3>
+      <p class="info-text">Le lezioni sono a numero limitato, con <strong>massimo 12 partecipanti</strong>. Se ci sono posti disponibili, la prenotazione viene confermata subito — nessuna attesa. In caso di impossibilità a partecipare, potrai annullare tramite il <strong>link personale</strong> ricevuto per email, preferibilmente con un po' di anticipo.</p>
+      <div class="info-bullets">
+        <div class="info-bullet">
+          <div class="info-bullet-num">12</div>
+          <div class="info-bullet-label">posti per lezione</div>
+        </div>
+        <div class="info-bullet">
+          <div class="info-bullet-num">8</div>
+          <div class="info-bullet-label">lezioni a settimana</div>
+        </div>
+        <div class="info-bullet">
+          <div class="info-bullet-num">∞</div>
+          <div class="info-bullet-label">cura per ogni persona</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRENOTA ── -->
+<section class="section section-sage" id="prenota">
+  <div class="container">
+    <div class="s-header-center fi">
+      <p class="s-tag">Prenota</p>
+      <h2 class="s-title">Riserva il tuo posto</h2>
+      <p class="s-desc">Compila il modulo qui sotto. La conferma è immediata se ci sono posti disponibili.</p>
+    </div>
+    <div id="booking-root"></div>
+  </div>
+</section>
+
+<!-- ── CONTATTI ── -->
+<section class="section section-dark" id="contatti">
+  <div class="container">
+    <h2 class="contacts-title fi">Parliamoci</h2>
+    <div class="contacts-grid">
+      <a href="https://wa.me/393485525084" target="_blank" rel="noopener" class="contact-card fi d1">
+        <div class="contact-ico">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="oklch(72% 0.082 148)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+        </div>
+        <div>
+          <div class="contact-label">WhatsApp</div>
+          <div class="contact-val">+39 348 552 5084</div>
+        </div>
+      </a>
+      <a href="mailto:katiaterruzzi@gmail.com" class="contact-card fi d2">
+        <div class="contact-ico">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(72% 0.082 148)" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val">katiaterruzzi@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://instagram.com/katia.terruzzi" target="_blank" rel="noopener" class="contact-card fi d3">
+        <div class="contact-ico">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(72% 0.082 148)" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </div>
+        <div>
+          <div class="contact-label">Instagram</div>
+          <div class="contact-val">@katia.terruzzi</div>
+        </div>
+      </a>
+      <div class="contact-card fi d4">
+        <div class="contact-ico">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="oklch(72% 0.082 148)" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        </div>
+        <div>
+          <div class="contact-label">Dove</div>
+          <div class="contact-val">La Ca' — Arcore, MB</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Katia Teruzzi — Pilates e Movimento Consapevole · Arcore, Monza e Brianza</p>
+</footer>
+
+<!-- ── REACT: Booking Form (bozza — non collegato al database) ── -->
+<script type="text/babel">
+  const { useState } = React;
+
+  const LESSONS = [
+    'Lunedì 18:00 — Mix',
+    'Lunedì 19:00 — Pilates',
+    'Martedì 10:00 — Pilates',
+    'Mercoledì 18:00 — Pilates',
+    'Mercoledì 19:00 — Mix',
+    'Giovedì 10:00 — Pilates',
+    'Giovedì 19:00 — Pilates',
+  ];
+
+  function StateConfirmed({ lesson, nome, onReset, onCancel }) {
+    return (
+      <div className="booking-card">
+        <div className="state-wrap">
+          <div className="state-icon ok">✓</div>
+          <h3 className="state-title">Prenotazione confermata!</h3>
+          <p className="state-desc">
+            Ciao <strong>{nome}</strong>, il tuo posto per <strong>{lesson}</strong> è riservato.
+            Riceverai una email di conferma con il link personale per eventuale annullamento.
+          </p>
+          <div className="state-actions">
+            <button className="btn-ghost" onClick={onReset}>Nuova prenotazione</button>
+            <button className="btn-ghost-warm" onClick={onCancel}>Simula annullamento</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function StateFull({ lesson, onReset }) {
+    return (
+      <div className="booking-card">
+        <div className="state-wrap">
+          <div className="state-icon nok">!</div>
+          <h3 className="state-title" style={{color:'oklch(50% 0.052 72)'}}>Lezione al completo</h3>
+          <p className="state-desc">
+            Siamo spiacenti, <strong>{lesson}</strong> ha raggiunto il numero massimo di 12 partecipanti.
+            Scegli un altro orario o contatta Katia su WhatsApp.
+          </p>
+          <div className="state-actions">
+            <button className="btn-ghost" onClick={onReset}>Scegli altro orario</button>
+            <a href="https://wa.me/393485525084" className="btn-ghost-warm" target="_blank" rel="noopener">WhatsApp →</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function StateCancelled({ onReset }) {
+    return (
+      <div className="booking-card">
+        <div className="state-wrap">
+          <div className="state-icon can">✕</div>
+          <h3 className="state-title" style={{color:'var(--text-mid)'}}>Prenotazione annullata</h3>
+          <p className="state-desc">
+            La tua prenotazione è stata annullata correttamente. Il posto è ora disponibile per altri.
+          </p>
+          <div className="state-actions">
+            <button className="btn-ghost" onClick={onReset}>Prenota di nuovo</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function BookingForm() {
+    const [screen, setScreen] = useState('form');
+    const [fields, setFields] = useState({ lesson:'', nome:'', cognome:'', email:'', telefono:'', privacy: false });
+    const [errors, setErrors] = useState({});
+    const [hasError, setHasError] = useState(false);
+
+    const set = (k, v) => { setFields(f => ({...f, [k]: v})); setErrors(e => ({...e, [k]: ''})); };
+
+    const validate = () => {
+      const e = {};
+      if (!fields.lesson)          e.lesson   = 'Seleziona una lezione';
+      if (!fields.nome.trim())     e.nome     = 'Campo obbligatorio';
+      if (!fields.cognome.trim())  e.cognome  = 'Campo obbligatorio';
+      if (!fields.email.trim())    e.email    = 'Campo obbligatorio';
+      else if (!/\S+@\S+\.\S+/.test(fields.email)) e.email = 'Formato non valido';
+      if (!fields.telefono.trim()) e.telefono = 'Campo obbligatorio';
+      if (!fields.privacy)         e.privacy  = 'Accetta la privacy per continuare';
+      return e;
+    };
+
+    const submit = (e) => {
+      e.preventDefault();
+      const errs = validate();
+      if (Object.keys(errs).length > 0) { setErrors(errs); setHasError(true); return; }
+      setHasError(false);
+      // Demo: 75% confirm, 25% full
+      setScreen(Math.random() > 0.25 ? 'confirmed' : 'full');
+    };
+
+    const reset = () => {
+      setScreen('form');
+      setFields({ lesson:'', nome:'', cognome:'', email:'', telefono:'', privacy: false });
+      setErrors({});
+      setHasError(false);
+    };
+
+    if (screen === 'confirmed') return <StateConfirmed lesson={fields.lesson} nome={fields.nome} onReset={reset} onCancel={() => setScreen('cancelled')} />;
+    if (screen === 'full')      return <StateFull lesson={fields.lesson} onReset={reset} />;
+    if (screen === 'cancelled') return <StateCancelled onReset={reset} />;
+
+    return (
+      <form className="booking-card" onSubmit={submit} noValidate>
+        {hasError && <div className="form-alert">Controlla i campi evidenziati e riprova.</div>}
+
+        <div className="form-field">
+          <label className="form-label">Seleziona lezione</label>
+          <select
+            className={`form-select${errors.lesson ? ' err' : ''}`}
+            value={fields.lesson}
+            onChange={e => set('lesson', e.target.value)}
+          >
+            <option value="">— Scegli giorno, orario e tipo —</option>
+            {LESSONS.map(l => <option key={l} value={l}>{l}</option>)}
+          </select>
+          {errors.lesson && <p className="form-err">{errors.lesson}</p>}
+        </div>
+
+        <div className="form-row">
+          <div className="form-field">
+            <label className="form-label">Nome</label>
+            <input
+              className={`form-input${errors.nome ? ' err' : ''}`}
+              type="text" value={fields.nome}
+              onChange={e => set('nome', e.target.value)}
+              placeholder="Anna"
+            />
+            {errors.nome && <p className="form-err">{errors.nome}</p>}
+          </div>
+          <div className="form-field">
+            <label className="form-label">Cognome</label>
+            <input
+              className={`form-input${errors.cognome ? ' err' : ''}`}
+              type="text" value={fields.cognome}
+              onChange={e => set('cognome', e.target.value)}
+              placeholder="Rossi"
+            />
+            {errors.cognome && <p className="form-err">{errors.cognome}</p>}
+          </div>
+        </div>
+
+        <div className="form-field">
+          <label className="form-label">Email</label>
+          <input
+            className={`form-input${errors.email ? ' err' : ''}`}
+            type="email" value={fields.email}
+            onChange={e => set('email', e.target.value)}
+            placeholder="anna@email.com"
+          />
+          {errors.email && <p className="form-err">{errors.email}</p>}
+        </div>
+
+        <div className="form-field">
+          <label className="form-label">Telefono</label>
+          <input
+            className={`form-input${errors.telefono ? ' err' : ''}`}
+            type="tel" value={fields.telefono}
+            onChange={e => set('telefono', e.target.value)}
+            placeholder="+39 333 123 4567"
+          />
+          {errors.telefono && <p className="form-err">{errors.telefono}</p>}
+        </div>
+
+        <div className="form-field">
+          <div className="form-privacy">
+            <input
+              type="checkbox"
+              id="privacy"
+              checked={fields.privacy}
+              onChange={e => set('privacy', e.target.checked)}
+            />
+            <label htmlFor="privacy" style={{cursor:'pointer'}}>
+              Compilando il modulo accetti che i dati inseriti vengano utilizzati per gestire la tua prenotazione.
+            </label>
+          </div>
+          {errors.privacy && <p className="form-err" style={{marginTop:'6px'}}>{errors.privacy}</p>}
+        </div>
+
+        <button type="submit" className="btn-submit">Conferma prenotazione</button>
+      </form>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('booking-root')).render(<BookingForm />);
+</script>
+
+<script>
+  // Fade-in on scroll
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks  = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+</script>
+
+</body>
+</html>

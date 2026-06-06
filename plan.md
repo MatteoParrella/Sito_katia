@@ -564,29 +564,31 @@ Queste funzioni potranno essere aggiunte in una fase successiva.
 
 ## 14. Iterazioni di sviluppo
 
-### Iterazione 0 — Raccolta informazioni
+### Iterazione 0 — Raccolta informazioni ✅ COMPLETATA (2025-06-05)
 
 Obiettivo: raccogliere tutto il materiale necessario.
 
 Da ottenere da Katia:
 
-- conferma orari definitivi;
-- durata delle lezioni;
-- indirizzo o zona;
-- numero WhatsApp;
-- email;
-- foto;
-- logo, se presente;
-- colori preferiti;
-- eventuale testo di presentazione;
-- eventuali regole di annullamento.
+- [x] conferma orari definitivi
+- [x] durata delle lezioni (60 min)
+- [x] indirizzo o zona (La Ca', Arcore — Monza e Brianza, Milano)
+- [x] numero WhatsApp (+39 348 5525084)
+- [x] email (katiaterruzzi@gmail.com)
+- [x] foto (dal volantino)
+- [x] logo (iniziali RT)
+- [x] colori preferiti (beige, rosa cipria, verde oliva — dal volantino)
+- [x] testo di presentazione (dal volantino e Instagram)
+- [x] regole di annullamento (via email, con ragionevole anticipo — placeholder 12h)
+- [x] Instagram (@katia.terruzzi)
+- [x] notifiche reali → +39 3318867681 / parrellamatteo24@gmail.com (UI mostra dati Katia)
 
 Output:
 
-- checklist materiali completa;
-- struttura contenuti approvata.
+- [x] checklist materiali completa
+- [x] struttura contenuti approvata
 
-### Iterazione 1 — Bozza grafica statica
+### Iterazione 1 — Bozza grafica statica ✅ COMPLETATA (2026-06-06)
 
 Obiettivo: creare una prima bozza visiva del sito.
 
