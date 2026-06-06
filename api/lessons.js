@@ -60,16 +60,15 @@ module.exports = async (req, res) => {
 
     if (instances.length === 0) return res.status(200).json({ upcoming: [] });
 
-    // Fetch confirmed counts for all (lesson_id, lesson_date) combos in one query
-    const lessonIds = [...new Set(instances.map(i => i.lesson_id))];
-    const dates     = [...new Set(instances.map(i => i.lesson_date))];
-
+    // Fetch confirmed counts for next 28 days in one query (avoids array param issues)
     const { rows: counts } = await client.query(`
-      SELECT lesson_id, lesson_date::text, COUNT(*)::int AS confirmed_count
+      SELECT lesson_id::text, lesson_date::text, COUNT(*)::int AS confirmed_count
       FROM bookings
-      WHERE lesson_id = ANY($1) AND lesson_date = ANY($2::date[]) AND status = 'confirmed'
+      WHERE status = 'confirmed'
+        AND lesson_date >= CURRENT_DATE
+        AND lesson_date <= CURRENT_DATE + INTERVAL '28 days'
       GROUP BY lesson_id, lesson_date
-    `, [lessonIds, dates]);
+    `);
 
     const countMap = {};
     for (const c of counts) {
