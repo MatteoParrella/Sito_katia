@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentazione Progetto — Katia Terruzzi Pilates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --sage: #4a7d7a; --sage-light: #e8f0ef;
+      --text: #1e1c18; --text-mid: #5a5750; --text-light: #9a9590;
+      --border: #e2ddd6; --white: #ffffff;
+      --green: #2d6a4f; --green-bg: #e8f5ef;
+      --orange: #8b5e00; --orange-bg: #fef6e4;
+      --red: #8b2a2a; --red-bg: #fdeaea;
+    }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--cream); color: var(--text); line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased; }
+
+    /* ── HEADER ── */
+    header { background: var(--sage); color: white; padding: 56px 48px; }
+    .header-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
+    .header-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 42px; font-weight: 400; line-height: 1.1; margin-bottom: 10px; }
+    .header-sub { font-size: 15px; opacity: 0.8; font-weight: 300; }
+    .header-meta { margin-top: 28px; display: flex; gap: 32px; flex-wrap: wrap; }
+    .header-meta-item { font-size: 12px; opacity: 0.65; letter-spacing: 0.04em; }
+    .header-meta-item strong { opacity: 1; font-weight: 500; display: block; font-size: 14px; margin-bottom: 2px; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 860px; margin: 0 auto; padding: 56px 32px; }
+    section { margin-bottom: 56px; }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 28px;
+      color: var(--sage); margin-bottom: 20px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border); font-weight: 400;
+    }
+    h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; letter-spacing: 0.02em; }
+    p { color: var(--text-mid); margin-bottom: 10px; font-size: 14px; line-height: 1.75; }
+    ul { padding-left: 18px; margin-bottom: 10px; }
+    li { color: var(--text-mid); font-size: 14px; line-height: 1.75; margin-bottom: 3px; }
+
+    /* ── CARDS ── */
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+    .card-body { font-size: 14px; color: var(--text-mid); line-height: 1.75; }
+
+    /* ── BADGES ── */
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
+    .badge-green  { background: var(--green-bg);  color: var(--green); }
+    .badge-orange { background: var(--orange-bg); color: var(--orange); }
+    .badge-red    { background: var(--red-bg);    color: var(--red); }
+    .badge-gray   { background: #f0ede8; color: var(--text-light); }
+
+    /* ── COST TABLE ── */
+    .cost-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 12px; }
+    .cost-table th { text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .cost-table td { padding: 12px 12px; border-bottom: 1px solid #f0ede8; vertical-align: top; }
+    .cost-table tr:last-child td { border-bottom: none; }
+    .cost-table .col-service { font-weight: 500; color: var(--text); width: 35%; }
+    .cost-table .col-cost { color: var(--sage); font-weight: 600; white-space: nowrap; }
+    .cost-total { background: var(--sage-light); border-radius: 8px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+    .cost-total-label { font-size: 13px; font-weight: 600; color: var(--text); }
+    .cost-total-val { font-size: 20px; font-weight: 600; color: var(--sage); }
+
+    /* ── LIMIT ITEM ── */
+    .limit-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid #f0ede8; align-items: flex-start; }
+    .limit-item:last-child { border-bottom: none; }
+    .limit-icon { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; margin-top: 1px; }
+    .limit-content h3 { margin-bottom: 4px; }
+    .limit-content p { margin-bottom: 4px; font-size: 13px; }
+    .limit-fix { font-size: 12px; color: var(--orange); background: var(--orange-bg); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+    /* ── FEATURE LIST ── */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .feature-item { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+    .feature-item h3 { font-size: 13px; margin-bottom: 4px; }
+    .feature-item p { font-size: 12px; color: var(--text-light); margin: 0; }
+    .feature-price { font-size: 12px; font-weight: 600; color: var(--sage); margin-top: 8px; }
+
+    /* ── SUMMARY BOX ── */
+    .summary { background: var(--sage); color: white; border-radius: 14px; padding: 32px 36px; }
+    .summary h2 { color: white; border-bottom-color: rgba(255,255,255,0.2); }
+    .summary p { color: rgba(255,255,255,0.8); }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 14px; }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .label { color: rgba(255,255,255,0.7); }
+    .summary-row .value { font-weight: 600; color: white; }
+    .summary-row .value.big { font-size: 20px; }
+
+    /* ── STACK GRID ── */
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .stack-item { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+    .stack-item h3 { font-size: 13px; color: var(--text); margin-bottom: 3px; }
+    .stack-item p { font-size: 12px; color: var(--text-light); margin: 0; }
+    .stack-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); background: var(--green-bg); padding: 2px 7px; border-radius: 4px; margin-bottom: 6px; display: inline-block; }
+
+    footer { text-align: center; padding: 32px; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); }
+
+    @media (max-width: 600px) {
+      header { padding: 36px 24px; }
+      .header-title { font-size: 30px; }
+      .container { padding: 36px 20px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media print {
+      body { font-size: 13px; }
+      header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .summary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Documento di progetto</div>
+  <h1 class="header-title">Sito Katia Terruzzi Pilates</h1>
+  <div class="header-sub">Landing page con sistema di prenotazione automatica</div>
+  <div class="header-meta">
+    <div class="header-meta-item"><strong>Cliente</strong> Katia Terruzzi</div>
+    <div class="header-meta-item"><strong>Sviluppatore</strong> Matteo Parrella</div>
+    <div class="header-meta-item"><strong>Data</strong> Giugno 2025</div>
+    <div class="header-meta-item"><strong>URL</strong> sito-katia.vercel.app</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ── 1. COS'È ── -->
+  <section>
+    <h2>1. Cos'è il sito</h2>
+    <p>Un sito web professionale con sistema di prenotazione automatico per le lezioni di Pilates e Mix di Katia Terruzzi. Gli utenti possono prenotare online, ricevere conferma immediata e annullare in autonomia. Katia ha una propria area gestione per vedere e gestire le prenotazioni.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
+      <div class="card">
+        <h3>Lato utente</h3>
+        <ul>
+          <li>Landing page professionale</li>
+          <li>Picker iOS per scegliere data e lezione</li>
+          <li>Prenotazione senza registrazione</li>
+          <li>Conferma immediata se ci sono posti</li>
+          <li>Email di conferma con link annullamento</li>
+          <li>Pagina annullamento con 1 clic</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Lato Katia</h3>
+        <ul>
+          <li>Area gestione protetta da password</li>
+          <li>Vista settimana con navigazione</li>
+          <li>Contatore posti per ogni lezione</li>
+          <li>Elenco partecipanti per data</li>
+          <li>Cancellazione manuale prenotazioni</li>
+          <li>Notifica email ad ogni prenotazione</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2. STACK ── -->
+  <section>
+    <h2>2. Tecnologie utilizzate</h2>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="stack-tag">Hosting</div>
+        <h3>Vercel</h3>
+        <p>Frontend + API serverless. Deploy automatico da GitHub.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tag">Database</div>
+        <h3>Neon</h3>
+        <p>PostgreSQL cloud europeo. Non si spegne mai.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tag">Email</div>
+        <h3>Gmail SMTP</h3>
+        <p>Invio email da account Gmail dedicato.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tag">Codice</div>
+        <h3>GitHub</h3>
+        <p>Repository privato. Storico modifiche.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tag">Frontend</div>
+        <h3>HTML/CSS/React</h3>
+        <p>Nessun framework pesante. Veloce e leggero.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tag">Backend</div>
+        <h3>Node.js API</h3>
+        <p>Logica prenotazioni, blocco posti, token sicuri.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. COSTI ATTUALI ── -->
+  <section>
+    <h2>3. Costi mensili attuali</h2>
+    <p>Il sito funziona interamente su piani gratuiti. Il costo operativo mensile è zero.</p>
+    <table class="cost-table">
+      <thead><tr><th>Servizio</th><th>Piano</th><th>Limite gratuito</th><th class="col-cost">Costo</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="col-service">Vercel (hosting + API)</td>
+          <td><span class="badge badge-green">Hobby free</span></td>
+          <td>100GB banda · 100k invocazioni/mese</td>
+          <td class="col-cost">0 €/mese</td>
+        </tr>
+        <tr>
+          <td class="col-service">Neon (database)</td>
+          <td><span class="badge badge-green">Free tier</span></td>
+          <td>512MB storage · non si spegne mai</td>
+          <td class="col-cost">0 €/mese</td>
+        </tr>
+        <tr>
+          <td class="col-service">Gmail SMTP (email)</td>
+          <td><span class="badge badge-green">Gmail gratuito</span></td>
+          <td>500 email/giorno</td>
+          <td class="col-cost">0 €/mese</td>
+        </tr>
+        <tr>
+          <td class="col-service">GitHub (repository)</td>
+          <td><span class="badge badge-green">Free</span></td>
+          <td>Repository illimitati</td>
+          <td class="col-cost">0 €/mese</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="cost-total">
+      <span class="cost-total-label">Totale costo mensile operativo</span>
+      <span class="cost-total-val">0 €/mese</span>
+    </div>
+  </section>
+
+  <!-- ── 4. COSTO OBBLIGATORIO ── -->
+  <section>
+    <h2>4. Costo obbligatorio — Dominio</h2>
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Dominio — katiaterruzzi.it</div>
+          <div style="margin-top:6px"><span class="badge badge-orange">Obbligatorio per uso professionale</span></div>
+        </div>
+        <div style="font-size:20px;font-weight:600;color:var(--sage);white-space:nowrap">~12 €/anno</div>
+      </div>
+      <div class="card-body">
+        Senza dominio il sito è raggiungibile solo su <code style="background:#f0ede8;padding:2px 6px;border-radius:4px;font-size:12px">sito-katia.vercel.app</code>. Con un dominio proprio il sito sarà su <code style="background:#f0ede8;padding:2px 6px;border-radius:4px;font-size:12px">katiaterruzzi.it</code>.
+        <br><br>
+        <strong>Dove comprarlo:</strong> Aruba.it — il registrar italiano più diffuso. Basta acquistare il dominio (non hosting, già incluso in Vercel).
+        <br><br>
+        <strong>Configurazione:</strong> aggiungere 2 record DNS nel pannello Aruba. Operazione da 10 minuti, eseguita dallo sviluppatore.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. LIMITI VERSIONI GRATUITE ── -->
+  <section>
+    <h2>5. Limiti delle versioni gratuite</h2>
+    <p>I limiti attuali sono abbondanti per un'attività della dimensione di Katia. Di seguito un'analisi onesta di cosa potrebbe cambiare in futuro.</p>
+
+    <div class="card" style="padding: 8px 28px;">
+      <div class="limit-item">
+        <div class="limit-icon">📧</div>
+        <div class="limit-content">
+          <h3>Gmail SMTP — 500 email/giorno</h3>
+          <p>Con 8 lezioni da 12 posti = massimo 96 prenotazioni/giorno. Ogni prenotazione genera 2 email (utente + admin). Limite: 240 email/giorno. <strong>Siamo abbondantemente sotto soglia.</strong></p>
+          <p>Rischio: Gmail potrebbe bloccare l'account se rileva invii automatici sospetti (raro con volumi bassi).</p>
+          <div class="limit-fix">Soluzione se necessario: Resend con dominio verificato — da 20€/mese per > 50.000 email</div>
+        </div>
+      </div>
+      <div class="limit-item">
+        <div class="limit-icon">🗄️</div>
+        <div class="limit-content">
+          <h3>Neon Database — 512MB storage</h3>
+          <p>Una prenotazione occupa circa 500 byte. Con 512MB si possono archiviare oltre 1 milione di prenotazioni. <strong>Sufficiente per decenni.</strong></p>
+          <div class="limit-fix">Upgrade Neon Launch: $19/mese — non necessario prevedibilmente</div>
+        </div>
+      </div>
+      <div class="limit-item">
+        <div class="limit-icon">🌐</div>
+        <div class="limit-content">
+          <h3>Vercel Hobby — Funzioni serverless</h3>
+          <p>Limite: 100.000 invocazioni/mese. Con 1.000 prenotazioni/mese si consumano ~3.000 invocazioni. <strong>Ampiamente entro i limiti.</strong></p>
+          <p>Nota: Vercel Hobby non permette funzioni con durata > 10 secondi. Attualmente le funzioni si completano in 1-2 secondi.</p>
+          <div class="limit-fix">Upgrade Vercel Pro: $20/mese — solo se il sito scala molto</div>
+        </div>
+      </div>
+      <div class="limit-item">
+        <div class="limit-icon">🔐</div>
+        <div class="limit-content">
+          <h3>Area admin — password semplice</h3>
+          <p>L'autenticazione dell'area gestione usa una password condivisa senza scadenza. Sicura per uso privato, ma non è un sistema enterprise.</p>
+          <div class="limit-fix">Soluzione futura: login con email/password con JWT — incluso in eventuali upgrade</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 6. FUNZIONALITÀ FUTURE ── -->
+  <section>
+    <h2>6. Funzionalità future — non incluse nei 250 €</h2>
+    <p>Le seguenti funzionalità non sono state incluse nella versione attuale ma possono essere aggiunte in un secondo momento come interventi separati.</p>
+
+    <div class="feature-grid">
+      <div class="feature-item">
+        <h3>📋 Lista d'attesa automatica</h3>
+        <p>Se una lezione è piena, l'utente si iscrive alla lista. Quando un posto si libera, viene notificato automaticamente.</p>
+        <div class="feature-price">Stima: 80–120 €</div>
+      </div>
+      <div class="feature-item">
+        <h3>📦 Pacchetti lezioni</h3>
+        <p>Abbonamenti da 5/10 lezioni con gestione crediti residui e scadenze.</p>
+        <div class="feature-price">Stima: 200–300 €</div>
+      </div>
+      <div class="feature-item">
+        <h3>💳 Pagamenti online</h3>
+        <p>Integrazione Stripe per pagare la lezione al momento della prenotazione.</p>
+        <div class="feature-price">Stima: 250–400 € + ~1.4% commissione Stripe</div>
+      </div>
+      <div class="feature-item">
+        <h3>⏰ Promemoria automatici</h3>
+        <p>Email di promemoria 24h prima della lezione a tutti i prenotati.</p>
+        <div class="feature-price">Stima: 60–80 €</div>
+      </div>
+      <div class="feature-item">
+        <h3>📊 Export CSV/Excel</h3>
+        <p>Scarica l'elenco partecipanti per ogni lezione o settimana.</p>
+        <div class="feature-price">Stima: 40–60 €</div>
+      </div>
+      <div class="feature-item">
+        <h3>📅 Gestione orari da pannello</h3>
+        <p>Katia può aggiungere, modificare o disattivare lezioni direttamente dall'admin.</p>
+        <div class="feature-price">Stima: 100–150 €</div>
+      </div>
+      <div class="feature-item">
+        <h3>💬 Notifiche WhatsApp</h3>
+        <p>Conferma prenotazione e promemoria via WhatsApp (richiede Twilio o WhatsApp Business API).</p>
+        <div class="feature-price">Stima: 150 € + ~0.05 €/messaggio</div>
+      </div>
+      <div class="feature-item">
+        <h3>👤 Area personale utente</h3>
+        <p>Login per gli utenti, storico prenotazioni, modifica dati personali.</p>
+        <div class="feature-price">Stima: 300–450 €</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 7. RIEPILOGO ── -->
+  <section>
+    <div class="summary">
+      <h2>7. Riepilogo economico</h2>
+      <div class="summary-row">
+        <span class="label">Sviluppo sito (pagamento una tantum)</span>
+        <span class="value big">250 €</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Dominio katiaterruzzi.it (annuale)</span>
+        <span class="value">~12 €/anno</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Hosting, database, email (mensile)</span>
+        <span class="value">0 €/mese</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Account Gmail dedicato (es. pilates.katiaterruzzi@gmail.com)</span>
+        <span class="value">0 €</span>
+      </div>
+      <div class="summary-row" style="margin-top:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.3)">
+        <span class="label" style="font-weight:600;color:white">Costo totale primo anno</span>
+        <span class="value big">~262 €</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Costo dal secondo anno in poi</span>
+        <span class="value">~12 €/anno (solo dominio)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 8. COSA FARE ALLA CONSEGNA ── -->
+  <section>
+    <h2>8. Operazioni per la consegna definitiva</h2>
+    <div class="card">
+      <div class="card-body">
+        <p>Prima di consegnare il sito a Katia, lo sviluppatore dovrà effettuare le seguenti operazioni (non richiedono costi aggiuntivi):</p>
+        <ol style="padding-left:20px;margin-top:10px;">
+          <li style="margin-bottom:8px;color:var(--text-mid);font-size:14px">Creare account Gmail dedicato (es. <code style="background:#f0ede8;padding:1px 5px;border-radius:3px">pilates.katiaterruzzi@gmail.com</code>) e generare App Password</li>
+          <li style="margin-bottom:8px;color:var(--text-mid);font-size:14px">Acquistare il dominio <strong>katiaterruzzi.it</strong> su Aruba</li>
+          <li style="margin-bottom:8px;color:var(--text-mid);font-size:14px">Configurare il dominio su Vercel (2 record DNS)</li>
+          <li style="margin-bottom:8px;color:var(--text-mid);font-size:14px">Aggiornare 5 variabili ambiente su Vercel: Gmail, email admin, password admin, URL sito</li>
+          <li style="margin-bottom:8px;color:var(--text-mid);font-size:14px">Test finale: prenotazione reale, email, area gestione, mobile</li>
+          <li style="color:var(--text-mid);font-size:14px">Breve formazione a Katia sull'area gestione (30 min)</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Documento riservato · Progetto Katia Terruzzi Pilates · Giugno 2025 · Sviluppato da Matteo Parrella
+</footer>
+
+</body>
+</html>
