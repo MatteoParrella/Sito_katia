@@ -88,29 +88,35 @@ module.exports = async (req, res) => {
 
     const { id, cancel_token } = bookingRes.rows[0];
 
-    // ── Send emails (non-blocking — don't fail booking if email fails) ──
+    // ── Send emails (awaited — Vercel kills non-awaited promises) ──
     const lessonRes2 = await client.query(
       `SELECT day_of_week, time, course_name FROM lessons WHERE id = $1`, [lesson_id]
     );
     if (lessonRes2.rows.length > 0) {
       const l = lessonRes2.rows[0];
       const lessonLabel = `${l.day_of_week} ${l.time} — ${l.course_name}`;
-      Promise.all([
-        sendBookingConfirmation({
-          first_name: first_name.trim(),
-          last_name:  last_name.trim(),
-          email:      email.trim().toLowerCase(),
-          lesson:     lessonLabel,
-          cancel_token,
-        }),
-        sendAdminNewBooking({
-          first_name: first_name.trim(),
-          last_name:  last_name.trim(),
-          email:      email.trim().toLowerCase(),
-          phone:      phone.trim(),
-          lesson:     lessonLabel,
-        }),
-      ]).catch(err => console.error('Email send error:', err.message));
+      try {
+        await Promise.all([
+          sendBookingConfirmation({
+            first_name: first_name.trim(),
+            last_name:  last_name.trim(),
+            email:      email.trim().toLowerCase(),
+            lesson:     lessonLabel,
+            cancel_token,
+          }),
+          sendAdminNewBooking({
+            first_name: first_name.trim(),
+            last_name:  last_name.trim(),
+            email:      email.trim().toLowerCase(),
+            phone:      phone.trim(),
+            lesson:     lessonLabel,
+          }),
+        ]);
+        console.log('Emails sent for booking', id);
+      } catch (emailErr) {
+        console.error('Email send error:', emailErr.message);
+        // Don't fail the booking if email fails
+      }
     }
 
     return res.status(201).json({
