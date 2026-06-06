@@ -3,6 +3,7 @@
 // POST { token }   — cancel the booking
 
 const { Client } = require('pg');
+const { sendAdminCancellation } = require('./_email');
 
 async function createClient() {
   const client = new Client({
@@ -96,6 +97,27 @@ module.exports = async (req, res) => {
       );
 
       await client.query('COMMIT');
+
+      // ── Send admin notification (non-blocking) ───────────
+      client.query(
+        `SELECT b.first_name, b.last_name, b.email,
+                l.day_of_week, l.time, l.course_name
+         FROM bookings b JOIN lessons l ON l.id = b.lesson_id
+         WHERE b.id = $1`,
+        [rows[0].id]
+      ).then(r => {
+        if (r.rows.length > 0) {
+          const b = r.rows[0];
+          sendAdminCancellation({
+            first_name: b.first_name,
+            last_name:  b.last_name,
+            email:      b.email,
+            lesson:     `${b.day_of_week} ${b.time} — ${b.course_name}`,
+            source:     'user',
+          }).catch(e => console.error('Email cancel error:', e.message));
+        }
+      }).catch(() => {});
+
       return res.status(200).json({ status: 'cancelled' });
 
     } catch (err) {

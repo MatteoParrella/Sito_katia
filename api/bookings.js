@@ -1,6 +1,7 @@
 // POST /api/bookings — create booking with seat check (transaction, overbooking-safe)
 
 const { Client } = require('pg');
+const { sendBookingConfirmation, sendAdminNewBooking } = require('./_email');
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email));
@@ -86,6 +87,31 @@ module.exports = async (req, res) => {
     await client.query('COMMIT');
 
     const { id, cancel_token } = bookingRes.rows[0];
+
+    // ── Send emails (non-blocking — don't fail booking if email fails) ──
+    const lessonRes2 = await client.query(
+      `SELECT day_of_week, time, course_name FROM lessons WHERE id = $1`, [lesson_id]
+    );
+    if (lessonRes2.rows.length > 0) {
+      const l = lessonRes2.rows[0];
+      const lessonLabel = `${l.day_of_week} ${l.time} — ${l.course_name}`;
+      Promise.all([
+        sendBookingConfirmation({
+          first_name: first_name.trim(),
+          last_name:  last_name.trim(),
+          email:      email.trim().toLowerCase(),
+          lesson:     lessonLabel,
+          cancel_token,
+        }),
+        sendAdminNewBooking({
+          first_name: first_name.trim(),
+          last_name:  last_name.trim(),
+          email:      email.trim().toLowerCase(),
+          phone:      phone.trim(),
+          lesson:     lessonLabel,
+        }),
+      ]).catch(err => console.error('Email send error:', err.message));
+    }
 
     return res.status(201).json({
       status:       'confirmed',

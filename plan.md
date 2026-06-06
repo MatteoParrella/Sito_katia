@@ -745,7 +745,7 @@ Test:
 - posto liberato dopo cancellazione;
 - prenotazione annullata non conteggiata.
 
-### Iterazione 7 — Notifiche
+### Iterazione 7 — Notifiche ✅ COMPLETATA (2026-06-06)
 
 Obiettivo: inviare conferme e avvisi.
 
