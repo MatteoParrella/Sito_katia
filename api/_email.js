@@ -22,7 +22,7 @@ async function sendBookingConfirmation({ first_name, last_name, email, lesson, c
   const transporter = createTransport();
 
   await transporter.sendMail({
-    from:    `"Katia Teruzzi Pilates" <${GMAIL_USER}>`,
+    from:    `"Katia Terruzzi Pilates" <${GMAIL_USER}>`,
     to:      email,
     subject: `Prenotazione confermata — ${lesson}`,
     html: `
@@ -33,7 +33,7 @@ async function sendBookingConfirmation({ first_name, last_name, email, lesson, c
     <tr><td align="center" style="padding:40px 16px;">
       <table width="520" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);">
         <tr><td style="background:#4a7d7a;padding:32px 40px;text-align:center;">
-          <p style="margin:0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7)">Katia Teruzzi</p>
+          <p style="margin:0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7)">Katia Terruzzi</p>
           <h1 style="margin:8px 0 0;font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:26px;color:#fff">Prenotazione confermata!</h1>
         </td></tr>
         <tr><td style="padding:36px 40px;">
@@ -54,7 +54,7 @@ async function sendBookingConfirmation({ first_name, last_name, email, lesson, c
           <p style="margin:20px 0 0;font-size:11px;color:#9a9590;text-align:center;word-break:break-all">Oppure apri: ${cancelUrl}</p>
         </td></tr>
         <tr><td style="background:#f4efe8;padding:20px 40px;text-align:center;">
-          <p style="margin:0;font-size:11px;color:#9a9590">© 2025 Katia Teruzzi · Arcore, Monza e Brianza</p>
+          <p style="margin:0;font-size:11px;color:#9a9590">© 2025 Katia Terruzzi · Arcore, Monza e Brianza</p>
           <p style="margin:4px 0 0;font-size:11px;color:#9a9590">
             <a href="https://wa.me/393485525084" style="color:#4a7d7a;text-decoration:none">WhatsApp</a> &nbsp;·&nbsp;
             <a href="mailto:katiaterruzzi@gmail.com" style="color:#4a7d7a;text-decoration:none">katiaterruzzi@gmail.com</a>
@@ -73,7 +73,7 @@ async function sendAdminNewBooking({ first_name, last_name, email, phone, lesson
   const transporter = createTransport();
 
   await transporter.sendMail({
-    from:    `"Katia Teruzzi Pilates" <${GMAIL_USER}>`,
+    from:    `"Katia Terruzzi Pilates" <${GMAIL_USER}>`,
     to:      ADMIN_NOTIFY,
     subject: `📅 Nuova prenotazione — ${first_name} ${last_name} · ${lesson}`,
     html: `
@@ -100,7 +100,7 @@ async function sendAdminCancellation({ first_name, last_name, email, lesson, sou
   const byWhom      = source === 'admin' ? 'da te (admin)' : "dall'utente";
 
   await transporter.sendMail({
-    from:    `"Katia Teruzzi Pilates" <${GMAIL_USER}>`,
+    from:    `"Katia Terruzzi Pilates" <${GMAIL_USER}>`,
     to:      ADMIN_NOTIFY,
     subject: `❌ Prenotazione annullata — ${first_name} ${last_name} · ${lesson}`,
     html: `

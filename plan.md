@@ -1,6 +1,6 @@
 # Piano completo — Sito one-page + sistema prenotazioni automatiche
 
-**Cliente:** Katia Teruzzi  
+**Cliente:** Katia Terruzzi  
 **Progetto:** Landing page per corsi Pilates/Mix con prenotazione automatica, limite massimo 12 posti e annullamento tramite link  
 **Versione piano:** 2.0  
 **Obiettivo:** creare una bozza funzionante da mostrare a Katia e poi completare il sito definitivo.
@@ -163,7 +163,7 @@ Per una bozza iniziale si può mostrarla come “Mix — da concordare”.
 
 Titolo suggerito:
 
-**Pilates e movimento consapevole con Katia Teruzzi**
+**Pilates e movimento consapevole con Katia Terruzzi**
 
 Sottotitolo suggerito:
 
