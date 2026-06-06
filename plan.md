@@ -717,7 +717,7 @@ Test:
 - tentativo annullamento senza token;
 - link copiato e aperto da altro browser.
 
-### Iterazione 6 — Area gestione Katia
+### Iterazione 6 — Area gestione Katia ✅ COMPLETATA (2026-06-06)
 
 Obiettivo: permettere a Katia di vedere e cancellare prenotazioni.
 

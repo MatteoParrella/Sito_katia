@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestione — Katia Teruzzi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      oklch(97.5% 0.009 88);
+      --sage-50:    oklch(96%   0.027 148);
+      --sage-100:   oklch(90%   0.055 148);
+      --sage-200:   oklch(80%   0.080 148);
+      --sage-400:   oklch(65%   0.098 148);
+      --sage-600:   oklch(48%   0.092 148);
+      --sage-800:   oklch(32%   0.072 148);
+      --sage-900:   oklch(22%   0.055 148);
+      --brown-100:  oklch(92%   0.024 72);
+      --brown-800:  oklch(34%   0.045 72);
+      --red-bg:     oklch(96%   0.015 25);
+      --red-border: oklch(80%   0.07  25);
+      --red-text:   oklch(40%   0.12  25);
+      --red-btn:    oklch(52%   0.14  25);
+      --red-hover:  oklch(42%   0.13  25);
+      --text:       oklch(21%   0.016 78);
+      --text-mid:   oklch(47%   0.020 78);
+      --text-light: oklch(64%   0.016 78);
+      --white: #ffffff;
+      --r-s: 8px; --r-m: 12px; --r-l: 16px; --r-xl: 999px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--cream); color: var(--text);
+      min-height: 100vh; -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      height: 56px; padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--sage-900);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-logo {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 17px; color: oklch(88% 0.018 90); text-decoration: none;
+    }
+    .topbar-badge {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: oklch(55% 0.04 148); padding: 3px 8px;
+      border: 1px solid oklch(35% 0.05 148); border-radius: 4px;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .btn-logout {
+      font-size: 11px; letter-spacing: 0.08em; color: oklch(55% 0.04 148);
+      background: none; border: 1px solid oklch(35% 0.05 148);
+      border-radius: var(--r-xl); padding: 5px 14px; cursor: pointer;
+      font-family: inherit; transition: all 0.2s;
+    }
+    .btn-logout:hover { color: oklch(75% 0.015 90); border-color: oklch(50% 0.06 148); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 960px; margin: 0 auto; padding: 36px 24px; }
+
+    /* ── SCREEN VISIBILITY ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── LOGIN ── */
+    .login-wrap {
+      min-height: calc(100vh - 56px); display: flex;
+      align-items: center; justify-content: center; padding: 32px 24px;
+    }
+    .login-card {
+      background: var(--white); border-radius: var(--r-l);
+      padding: 48px 44px; max-width: 380px; width: 100%;
+      box-shadow: 0 4px 24px oklch(0% 0 0 / 0.07);
+      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      text-align: center;
+    }
+    .login-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 26px; color: var(--sage-800); margin-bottom: 8px;
+    }
+    .login-sub { font-size: 13px; color: var(--text-mid); margin-bottom: 28px; }
+    .login-field { margin-bottom: 16px; text-align: left; }
+    .login-label {
+      display: block; font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-light); margin-bottom: 6px;
+    }
+    .login-input {
+      width: 100%; padding: 11px 14px; border-radius: var(--r-s);
+      border: 1.5px solid oklch(90% 0.055 148 / 0.5);
+      font-size: 14px; font-family: inherit; background: var(--cream);
+      outline: none; transition: border-color 0.2s;
+    }
+    .login-input:focus { border-color: var(--sage-400); background: var(--white); }
+    .login-input.err   { border-color: var(--red-btn); }
+    .login-err { font-size: 12px; color: var(--red-text); margin-top: 8px; }
+
+    /* ── DASHBOARD ── */
+    .dash-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 8px;
+    }
+    .dash-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 28px; color: var(--sage-800);
+    }
+    .dash-sub { font-size: 13px; color: var(--text-light); }
+
+    /* ── LESSONS GRID ── */
+    .lessons-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+    }
+    .lesson-card {
+      background: var(--white); border-radius: var(--r-l); padding: 20px 22px;
+      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      box-shadow: 0 1px 6px oklch(0% 0 0 / 0.04);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .lesson-card:hover { box-shadow: 0 4px 16px oklch(0% 0 0 / 0.08); transform: translateY(-2px); }
+    .lesson-card.inactive { opacity: 0.5; }
+    .lesson-day { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); margin-bottom: 4px; }
+    .lesson-time { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--text); margin-bottom: 4px; }
+    .lesson-course { font-size: 13px; color: var(--text-mid); margin-bottom: 14px; }
+    .lesson-count-row { display: flex; align-items: center; justify-content: space-between; }
+    .lesson-count {
+      font-size: 13px; font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .count-bar {
+      width: 80px; height: 5px; background: var(--sage-100); border-radius: 3px; overflow: hidden;
+    }
+    .count-bar-fill { height: 100%; border-radius: 3px; background: var(--sage-400); transition: width 0.3s; }
+    .count-bar-fill.full { background: var(--red-btn); }
+    .btn-view {
+      font-size: 11px; letter-spacing: 0.06em; color: var(--sage-600);
+      background: var(--sage-50); border: none; border-radius: var(--r-xl);
+      padding: 5px 14px; cursor: pointer; font-family: inherit; transition: background 0.2s;
+    }
+    .btn-view:hover { background: var(--sage-100); }
+    .lesson-notes { font-size: 11px; color: var(--text-light); margin-top: 8px; }
+
+    /* ── LESSON DETAIL ── */
+    .detail-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-mid); cursor: pointer;
+      border: none; background: none; font-family: inherit;
+      padding: 0; margin-bottom: 20px; transition: color 0.2s;
+    }
+    .detail-back:hover { color: var(--sage-600); }
+    .detail-header { margin-bottom: 24px; }
+    .detail-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 26px; color: var(--sage-800); margin-bottom: 4px;
+    }
+    .detail-meta { font-size: 13px; color: var(--text-mid); }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead tr { background: var(--sage-50); }
+    th {
+      padding: 10px 14px; text-align: left; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-light); border-bottom: 1px solid oklch(90% 0.055 148 / 0.3);
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 14px; border-bottom: 1px solid oklch(90% 0.055 148 / 0.15);
+      color: var(--text); vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: oklch(98% 0.01 148); }
+    tr.cancelled td { opacity: 0.45; }
+
+    .status-badge {
+      display: inline-block; padding: 3px 10px; border-radius: var(--r-xl);
+      font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+    }
+    .status-confirmed { background: var(--sage-100); color: var(--sage-800); }
+    .status-cancelled { background: oklch(94% 0.01 80); color: var(--text-light); }
+
+    .btn-cancel-booking {
+      font-size: 11px; color: var(--red-text); background: var(--red-bg);
+      border: 1px solid var(--red-border); border-radius: var(--r-xl);
+      padding: 4px 12px; cursor: pointer; font-family: inherit; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-cancel-booking:hover { background: var(--red-btn); color: var(--white); border-color: var(--red-btn); }
+
+    .empty-state {
+      text-align: center; padding: 48px 24px;
+      color: var(--text-light); font-size: 14px;
+      background: var(--white); border-radius: var(--r-l);
+      border: 1px solid oklch(90% 0.055 148 / 0.3);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: oklch(0% 0 0 / 0.4);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 24px; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--white); border-radius: var(--r-l); padding: 36px 32px;
+      max-width: 380px; width: 100%;
+      box-shadow: 0 16px 48px oklch(0% 0 0 / 0.2);
+      transform: translateY(8px); transition: transform 0.2s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 22px; color: var(--sage-800); margin-bottom: 10px;
+    }
+    .modal-desc { font-size: 13px; color: var(--text-mid); line-height: 1.7; margin-bottom: 24px; }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn-modal-cancel {
+      flex: 1; padding: 10px; border-radius: var(--r-xl);
+      background: var(--red-btn); color: var(--white); border: none;
+      font-size: 13px; font-weight: 500; font-family: inherit;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-modal-cancel:hover { background: var(--red-hover); }
+    .btn-modal-cancel:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-modal-back {
+      flex: 1; padding: 10px; border-radius: var(--r-xl);
+      background: var(--sage-100); color: var(--sage-800); border: none;
+      font-size: 13px; font-weight: 500; font-family: inherit;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-modal-back:hover { background: var(--sage-200); }
+
+    /* ── SHARED BUTTON ── */
+    .btn-primary {
+      padding: 11px 24px; border-radius: var(--r-xl);
+      background: var(--sage-600); color: var(--white); border: none;
+      font-size: 13px; font-weight: 500; font-family: inherit;
+      cursor: pointer; width: 100%; margin-top: 4px; transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--sage-800); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ── LOADING SPINNER ── */
+    .spinner { display: inline-block; font-size: 18px; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 520px) {
+      .login-card { padding: 32px 22px; }
+      .topbar { padding: 0 16px; }
+      .page { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="/" class="topbar-logo">Katia Teruzzi</a>
+    <span class="topbar-badge">Gestione</span>
+  </div>
+  <div class="topbar-right" id="topbarRight" style="display:none">
+    <button class="btn-logout" onclick="logout()">Esci</button>
+  </div>
+</div>
+
+<!-- ── SCREEN: LOGIN ── -->
+<div class="screen active" id="screenLogin">
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1 class="login-title">Area gestione</h1>
+      <p class="login-sub">Accesso riservato a Katia Teruzzi</p>
+      <form onsubmit="doLogin(event)">
+        <div class="login-field">
+          <label class="login-label" for="pwdInput">Password</label>
+          <input class="login-input" type="password" id="pwdInput" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <p class="login-err" id="loginErr" style="display:none"></p>
+        <button type="submit" class="btn-primary" id="loginBtn">Accedi</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN: DASHBOARD ── -->
+<div class="screen" id="screenDash">
+  <div class="page">
+    <div class="dash-header">
+      <h1 class="dash-title">Lezioni settimanali</h1>
+      <span class="dash-sub" id="dashSub"></span>
+    </div>
+    <div class="lessons-grid" id="lessonsGrid">
+      <p style="color:var(--text-light);font-size:13px">Caricamento…</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN: LESSON DETAIL ── -->
+<div class="screen" id="screenDetail">
+  <div class="page">
+    <button class="detail-back" onclick="showDash()">← Tutte le lezioni</button>
+    <div class="detail-header">
+      <h2 class="detail-title" id="detailTitle">—</h2>
+      <p class="detail-meta" id="detailMeta">—</p>
+    </div>
+    <div class="table-wrap" id="bookingsTable">
+      <p style="color:var(--text-light);font-size:13px">Caricamento…</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: conferma cancellazione ── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 class="modal-title">Cancella prenotazione</h3>
+    <p class="modal-desc" id="modalDesc">—</p>
+    <div class="modal-actions">
+      <button class="btn-modal-back" onclick="closeModal()">Annulla</button>
+      <button class="btn-modal-cancel" id="modalConfirmBtn" onclick="confirmCancel()">Sì, cancella</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TOKEN_KEY = 'katia_admin_token';
+  let currentToken    = localStorage.getItem(TOKEN_KEY) || '';
+  let currentLessonId = null;
+  let pendingBookingId = null;
+  let pendingBookingName = null;
+
+  // ── Init ─────────────────────────────────────────────────
+  if (currentToken) {
+    showDash();
+  }
+
+  // ── Screen helpers ───────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // ── Login ────────────────────────────────────────────────
+  async function doLogin(e) {
+    e.preventDefault();
+    const pwd    = document.getElementById('pwdInput').value;
+    const btn    = document.getElementById('loginBtn');
+    const errEl  = document.getElementById('loginErr');
+    const input  = document.getElementById('pwdInput');
+
+    if (!pwd) return;
+
+    btn.disabled    = true;
+    btn.textContent = 'Accesso in corso…';
+    errEl.style.display = 'none';
+    input.classList.remove('err');
+
+    try {
+      const res  = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        input.classList.add('err');
+        errEl.textContent   = data.error || 'Password errata';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      currentToken = data.token;
+      localStorage.setItem(TOKEN_KEY, currentToken);
+      showDash();
+
+    } catch (err) {
+      errEl.textContent   = 'Impossibile contattare il server.';
+      errEl.style.display = 'block';
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = 'Accedi';
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem(TOKEN_KEY);
+    currentToken = '';
+    document.getElementById('topbarRight').style.display = 'none';
+    document.getElementById('pwdInput').value = '';
+    showScreen('screenLogin');
+  }
+
+  // ── Dashboard ────────────────────────────────────────────
+  async function showDash() {
+    showScreen('screenDash');
+    document.getElementById('topbarRight').style.display = 'flex';
+    document.getElementById('lessonsGrid').innerHTML = '<p style="color:var(--text-light);font-size:13px"><span class="spinner">⟳</span> Caricamento…</p>';
+
+    try {
+      const res  = await fetch('/api/admin/lessons', {
+        headers: { 'Authorization': `Bearer ${currentToken}` },
+      });
+
+      if (res.status === 401) { logout(); return; }
+
+      const data = await res.json();
+      renderLessons(data.lessons || []);
+
+    } catch (err) {
+      document.getElementById('lessonsGrid').innerHTML =
+        '<p style="color:var(--red-text);font-size:13px">Errore caricamento lezioni.</p>';
+    }
+  }
+
+  function renderLessons(lessons) {
+    const totalConfirmed = lessons.reduce((s, l) => s + parseInt(l.confirmed_count || 0), 0);
+    document.getElementById('dashSub').textContent = `${totalConfirmed} prenotazioni totali questa settimana`;
+
+    if (lessons.length === 0) {
+      document.getElementById('lessonsGrid').innerHTML = '<p style="color:var(--text-light)">Nessuna lezione trovata.</p>';
+      return;
+    }
+
+    document.getElementById('lessonsGrid').innerHTML = lessons.map(l => {
+      const count   = parseInt(l.confirmed_count || 0);
+      const max     = parseInt(l.max_seats || 12);
+      const pct     = Math.round((count / max) * 100);
+      const isFull  = count >= max;
+      const inactive = !l.is_active;
+      return `
+        <div class="lesson-card${inactive ? ' inactive' : ''}">
+          <div class="lesson-day">${l.day_of_week}${inactive ? ' · da concordare' : ''}</div>
+          <div class="lesson-time">${l.time}</div>
+          <div class="lesson-course">${l.course_name}</div>
+          <div class="lesson-count-row">
+            <div class="lesson-count">
+              <div class="count-bar">
+                <div class="count-bar-fill${isFull ? ' full' : ''}" style="width:${pct}%"></div>
+              </div>
+              <span style="color:${isFull ? 'var(--red-btn)' : 'var(--text-mid)'}">${count}/${max}</span>
+            </div>
+            ${!inactive ? `<button class="btn-view" onclick="showDetail('${l.id}','${l.day_of_week}','${l.time}','${l.course_name}',${count},${max})">Vedi →</button>` : ''}
+          </div>
+          ${l.notes ? `<div class="lesson-notes">${l.notes}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ── Lesson detail ────────────────────────────────────────
+  async function showDetail(lessonId, day, time, course, count, max) {
+    currentLessonId = lessonId;
+    showScreen('screenDetail');
+    document.getElementById('detailTitle').textContent = `${day} ${time} — ${course}`;
+    document.getElementById('detailMeta').textContent  = `${count}/${max} posti occupati`;
+    document.getElementById('bookingsTable').innerHTML = '<p style="color:var(--text-light);font-size:13px"><span class="spinner">⟳</span> Caricamento…</p>';
+
+    try {
+      const res  = await fetch(`/api/admin/bookings?lesson_id=${lessonId}`, {
+        headers: { 'Authorization': `Bearer ${currentToken}` },
+      });
+
+      if (res.status === 401) { logout(); return; }
+
+      const data = await res.json();
+      renderBookings(data.bookings || [], day, time, course);
+
+    } catch (err) {
+      document.getElementById('bookingsTable').innerHTML =
+        '<p style="color:var(--red-text);font-size:13px">Errore caricamento prenotazioni.</p>';
+    }
+  }
+
+  function renderBookings(bookings, day, time, course) {
+    if (bookings.length === 0) {
+      document.getElementById('bookingsTable').innerHTML =
+        '<div class="empty-state">Nessuna prenotazione per questa lezione.</div>';
+      return;
+    }
+
+    const confirmed  = bookings.filter(b => b.status === 'confirmed').length;
+    const cancelled  = bookings.filter(b => b.status === 'cancelled').length;
+    document.getElementById('detailMeta').textContent =
+      `${confirmed} confermati · ${cancelled} annullati`;
+
+    document.getElementById('bookingsTable').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Stato</th>
+            <th>Prenotato il</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${bookings.map(b => {
+            const date = new Date(b.created_at).toLocaleDateString('it-IT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+            const isCancelled = b.status === 'cancelled';
+            return `
+              <tr class="${isCancelled ? 'cancelled' : ''}" id="row-${b.id}">
+                <td><strong>${escHtml(b.first_name)} ${escHtml(b.last_name)}</strong></td>
+                <td><a href="mailto:${escHtml(b.email)}" style="color:var(--sage-600)">${escHtml(b.email)}</a></td>
+                <td>${escHtml(b.phone)}</td>
+                <td><span class="status-badge status-${b.status}">${b.status === 'confirmed' ? 'Confermata' : 'Annullata'}</span></td>
+                <td style="color:var(--text-light)">${date}</td>
+                <td>
+                  ${!isCancelled
+                    ? `<button class="btn-cancel-booking" onclick="openModal('${b.id}','${escHtml(b.first_name)} ${escHtml(b.last_name)}')">Cancella</button>`
+                    : ''}
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  // ── Modal ────────────────────────────────────────────────
+  function openModal(bookingId, name) {
+    pendingBookingId   = bookingId;
+    pendingBookingName = name;
+    document.getElementById('modalDesc').textContent =
+      `Stai per cancellare la prenotazione di ${name}. Il posto tornerà disponibile per altri utenti.`;
+    document.getElementById('modalConfirmBtn').disabled    = false;
+    document.getElementById('modalConfirmBtn').textContent = 'Sì, cancella';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    pendingBookingId   = null;
+    pendingBookingName = null;
+  }
+
+  async function confirmCancel() {
+    if (!pendingBookingId) return;
+
+    const btn = document.getElementById('modalConfirmBtn');
+    btn.disabled    = true;
+    btn.textContent = 'Cancellazione…';
+
+    try {
+      const res  = await fetch('/api/admin/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify({ booking_id: pendingBookingId }),
+      });
+
+      if (res.status === 401) { logout(); return; }
+
+      const data = await res.json();
+      closeModal();
+
+      if (data.status === 'cancelled' || data.status === 'already_cancelled') {
+        // Update row in table without full reload
+        const row = document.getElementById(`row-${pendingBookingId}`);
+        if (row) {
+          row.classList.add('cancelled');
+          row.querySelector('.status-badge').className = 'status-badge status-cancelled';
+          row.querySelector('.status-badge').textContent = 'Annullata';
+          const cancelBtn = row.querySelector('.btn-cancel-booking');
+          if (cancelBtn) cancelBtn.remove();
+        }
+        // Refresh counter
+        showDetail(currentLessonId,
+          document.getElementById('detailTitle').textContent.split(' ')[0],
+          document.getElementById('detailTitle').textContent.split(' ')[1],
+          document.getElementById('detailTitle').textContent.split('— ')[1] || '',
+          0, 12
+        );
+      }
+
+    } catch (err) {
+      closeModal();
+      alert('Errore durante la cancellazione. Riprova.');
+    }
+  }
+
+  // ── Close modal on overlay click ─────────────────────────
+  document.getElementById('modalOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  // ── Utils ────────────────────────────────────────────────
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+</script>
+</body>
+</html>

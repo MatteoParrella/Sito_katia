@@ -3,6 +3,7 @@
     "api/*.js": { "maxDuration": 10 }
   },
   "rewrites": [
-    { "source": "/annulla", "destination": "/annulla.html" }
+    { "source": "/annulla", "destination": "/annulla.html" },
+    { "source": "/admin",   "destination": "/admin.html"   }
   ]
 }
