@@ -714,47 +714,48 @@
   <p>© 2025 Katia Teruzzi — Pilates e Movimento Consapevole · Arcore, Monza e Brianza</p>
 </footer>
 
-<!-- ── REACT: Booking Form (bozza — non collegato al database) ── -->
+<!-- ── REACT: Booking Form (collegato al database via API) ── -->
 <script type="text/babel">
-  const { useState } = React;
+  const { useState, useEffect } = React;
 
-  const LESSONS = [
-    'Lunedì 18:00 — Mix',
-    'Lunedì 19:00 — Pilates',
-    'Martedì 10:00 — Pilates',
-    'Mercoledì 18:00 — Pilates',
-    'Mercoledì 19:00 — Mix',
-    'Giovedì 10:00 — Pilates',
-    'Giovedì 19:00 — Pilates',
-  ];
-
-  function StateConfirmed({ lesson, nome, onReset, onCancel }) {
+  // ── Stato: Prenotazione confermata ───────────────────────────
+  function StateConfirmed({ lessonLabel, nome, cancelToken, onReset }) {
+    const cancelUrl = `${window.location.origin}/annulla?token=${cancelToken}`;
     return (
       <div className="booking-card">
         <div className="state-wrap">
           <div className="state-icon ok">✓</div>
           <h3 className="state-title">Prenotazione confermata!</h3>
           <p className="state-desc">
-            Ciao <strong>{nome}</strong>, il tuo posto per <strong>{lesson}</strong> è riservato.
-            Riceverai una email di conferma con il link personale per eventuale annullamento.
+            Ciao <strong>{nome}</strong>, il tuo posto per <strong>{lessonLabel}</strong> è riservato.
+            Conserva il link qui sotto per annullare se non puoi partecipare.
           </p>
+          <div style={{
+            background:'oklch(96% 0.027 148)', borderRadius:'8px',
+            padding:'12px 16px', margin:'0 auto 24px', maxWidth:'360px',
+            fontSize:'12px', color:'oklch(32% 0.072 148)', wordBreak:'break-all',
+            textAlign:'left', lineHeight:'1.6'
+          }}>
+            <span style={{display:'block', fontSize:'10px', letterSpacing:'0.1em', textTransform:'uppercase', opacity:0.7, marginBottom:'4px'}}>Link annullamento</span>
+            <code>{cancelUrl}</code>
+          </div>
           <div className="state-actions">
             <button className="btn-ghost" onClick={onReset}>Nuova prenotazione</button>
-            <button className="btn-ghost-warm" onClick={onCancel}>Simula annullamento</button>
           </div>
         </div>
       </div>
     );
   }
 
-  function StateFull({ lesson, onReset }) {
+  // ── Stato: Lezione al completo ───────────────────────────────
+  function StateFull({ lessonLabel, onReset }) {
     return (
       <div className="booking-card">
         <div className="state-wrap">
           <div className="state-icon nok">!</div>
           <h3 className="state-title" style={{color:'oklch(50% 0.052 72)'}}>Lezione al completo</h3>
           <p className="state-desc">
-            Siamo spiacenti, <strong>{lesson}</strong> ha raggiunto il numero massimo di 12 partecipanti.
+            Siamo spiacenti, <strong>{lessonLabel}</strong> ha raggiunto il numero massimo di 12 partecipanti.
             Scegli un altro orario o contatta Katia su WhatsApp.
           </p>
           <div className="state-actions">
@@ -766,62 +767,142 @@
     );
   }
 
-  function StateCancelled({ onReset }) {
+  // ── Stato: Errore server ─────────────────────────────────────
+  function StateError({ message, onReset }) {
     return (
       <div className="booking-card">
         <div className="state-wrap">
-          <div className="state-icon can">✕</div>
-          <h3 className="state-title" style={{color:'var(--text-mid)'}}>Prenotazione annullata</h3>
-          <p className="state-desc">
-            La tua prenotazione è stata annullata correttamente. Il posto è ora disponibile per altri.
-          </p>
+          <div className="state-icon nok" style={{fontSize:'18px'}}>⚠</div>
+          <h3 className="state-title" style={{color:'var(--text-mid)'}}>Qualcosa è andato storto</h3>
+          <p className="state-desc">{message || 'Errore del server. Riprova tra qualche minuto o contatta Katia.'}</p>
           <div className="state-actions">
-            <button className="btn-ghost" onClick={onReset}>Prenota di nuovo</button>
+            <button className="btn-ghost" onClick={onReset}>Riprova</button>
+            <a href="https://wa.me/393485525084" className="btn-ghost-warm" target="_blank" rel="noopener">WhatsApp →</a>
           </div>
         </div>
       </div>
     );
   }
 
+  // ── Form principale ──────────────────────────────────────────
   function BookingForm() {
-    const [screen, setScreen] = useState('form');
-    const [fields, setFields] = useState({ lesson:'', nome:'', cognome:'', email:'', telefono:'', privacy: false });
+    const [screen,      setScreen]      = useState('form');
+    const [lessons,     setLessons]     = useState([]);
+    const [loadingLessons, setLoadingLessons] = useState(true);
+    const [submitting,  setSubmitting]  = useState(false);
+    const [confirmed,   setConfirmed]   = useState(null); // { lessonLabel, nome, cancelToken }
+    const [fullLesson,  setFullLesson]  = useState('');
+    const [serverError, setServerError] = useState('');
+    const [fields, setFields] = useState({
+      lesson_id: '', nome: '', cognome: '', email: '', telefono: '', privacy: false
+    });
     const [errors, setErrors] = useState({});
     const [hasError, setHasError] = useState(false);
 
-    const set = (k, v) => { setFields(f => ({...f, [k]: v})); setErrors(e => ({...e, [k]: ''})); };
+    // Load lessons on mount
+    useEffect(() => {
+      fetch('/api/lessons')
+        .then(r => r.json())
+        .then(data => { setLessons(data.lessons || []); setLoadingLessons(false); })
+        .catch(() => { setLessons([]); setLoadingLessons(false); });
+    }, []);
+
+    const set = (k, v) => {
+      setFields(f => ({...f, [k]: v}));
+      setErrors(e => ({...e, [k]: ''}));
+    };
 
     const validate = () => {
       const e = {};
-      if (!fields.lesson)          e.lesson   = 'Seleziona una lezione';
-      if (!fields.nome.trim())     e.nome     = 'Campo obbligatorio';
-      if (!fields.cognome.trim())  e.cognome  = 'Campo obbligatorio';
-      if (!fields.email.trim())    e.email    = 'Campo obbligatorio';
+      if (!fields.lesson_id)          e.lesson_id = 'Seleziona una lezione';
+      if (!fields.nome.trim())         e.nome      = 'Campo obbligatorio';
+      if (!fields.cognome.trim())      e.cognome   = 'Campo obbligatorio';
+      if (!fields.email.trim())        e.email     = 'Campo obbligatorio';
       else if (!/\S+@\S+\.\S+/.test(fields.email)) e.email = 'Formato non valido';
-      if (!fields.telefono.trim()) e.telefono = 'Campo obbligatorio';
-      if (!fields.privacy)         e.privacy  = 'Accetta la privacy per continuare';
+      if (!fields.telefono.trim())     e.telefono  = 'Campo obbligatorio';
+      if (!fields.privacy)             e.privacy   = 'Accetta la privacy per continuare';
       return e;
     };
 
-    const submit = (e) => {
+    const submit = async (e) => {
       e.preventDefault();
       const errs = validate();
       if (Object.keys(errs).length > 0) { setErrors(errs); setHasError(true); return; }
       setHasError(false);
-      // Demo: 75% confirm, 25% full
-      setScreen(Math.random() > 0.25 ? 'confirmed' : 'full');
+      setSubmitting(true);
+
+      try {
+        const res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            lesson_id:  fields.lesson_id,
+            first_name: fields.nome,
+            last_name:  fields.cognome,
+            email:      fields.email,
+            phone:      fields.telefono,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.status === 400 && data.fields) {
+          // Server-side validation errors
+          const mapped = {};
+          if (data.fields.lesson_id)  mapped.lesson_id = data.fields.lesson_id;
+          if (data.fields.first_name) mapped.nome      = data.fields.first_name;
+          if (data.fields.last_name)  mapped.cognome   = data.fields.last_name;
+          if (data.fields.email)      mapped.email     = data.fields.email;
+          if (data.fields.phone)      mapped.telefono  = data.fields.phone;
+          setErrors(mapped);
+          setHasError(true);
+          return;
+        }
+
+        if (!res.ok) {
+          setServerError(data.error || 'Errore del server');
+          setScreen('error');
+          return;
+        }
+
+        if (data.status === 'full') {
+          const lesson = lessons.find(l => l.id === fields.lesson_id);
+          setFullLesson(lesson ? `${lesson.day_of_week} ${lesson.time} — ${lesson.course_name}` : 'la lezione selezionata');
+          setScreen('full');
+          return;
+        }
+
+        if (data.status === 'confirmed') {
+          const lesson = lessons.find(l => l.id === fields.lesson_id);
+          setConfirmed({
+            lessonLabel: lesson ? `${lesson.day_of_week} ${lesson.time} — ${lesson.course_name}` : 'la lezione',
+            nome:        fields.nome,
+            cancelToken: data.cancel_token,
+          });
+          setScreen('confirmed');
+        }
+
+      } catch (err) {
+        setServerError('Impossibile contattare il server. Controlla la connessione.');
+        setScreen('error');
+      } finally {
+        setSubmitting(false);
+      }
     };
 
     const reset = () => {
       setScreen('form');
-      setFields({ lesson:'', nome:'', cognome:'', email:'', telefono:'', privacy: false });
+      setFields({ lesson_id:'', nome:'', cognome:'', email:'', telefono:'', privacy:false });
       setErrors({});
       setHasError(false);
+      setConfirmed(null);
+      setFullLesson('');
+      setServerError('');
     };
 
-    if (screen === 'confirmed') return <StateConfirmed lesson={fields.lesson} nome={fields.nome} onReset={reset} onCancel={() => setScreen('cancelled')} />;
-    if (screen === 'full')      return <StateFull lesson={fields.lesson} onReset={reset} />;
-    if (screen === 'cancelled') return <StateCancelled onReset={reset} />;
+    if (screen === 'confirmed') return <StateConfirmed {...confirmed} onReset={reset} />;
+    if (screen === 'full')      return <StateFull lessonLabel={fullLesson} onReset={reset} />;
+    if (screen === 'error')     return <StateError message={serverError} onReset={reset} />;
 
     return (
       <form className="booking-card" onSubmit={submit} noValidate>
@@ -830,14 +911,19 @@
         <div className="form-field">
           <label className="form-label">Seleziona lezione</label>
           <select
-            className={`form-select${errors.lesson ? ' err' : ''}`}
-            value={fields.lesson}
-            onChange={e => set('lesson', e.target.value)}
+            className={`form-select${errors.lesson_id ? ' err' : ''}`}
+            value={fields.lesson_id}
+            onChange={e => set('lesson_id', e.target.value)}
+            disabled={loadingLessons}
           >
-            <option value="">— Scegli giorno, orario e tipo —</option>
-            {LESSONS.map(l => <option key={l} value={l}>{l}</option>)}
+            <option value="">{loadingLessons ? 'Caricamento lezioni…' : '— Scegli giorno, orario e tipo —'}</option>
+            {lessons.map(l => (
+              <option key={l.id} value={l.id}>
+                {l.day_of_week} {l.time} — {l.course_name}
+              </option>
+            ))}
           </select>
-          {errors.lesson && <p className="form-err">{errors.lesson}</p>}
+          {errors.lesson_id && <p className="form-err">{errors.lesson_id}</p>}
         </div>
 
         <div className="form-row">
@@ -900,7 +986,9 @@
           {errors.privacy && <p className="form-err" style={{marginTop:'6px'}}>{errors.privacy}</p>}
         </div>
 
-        <button type="submit" className="btn-submit">Conferma prenotazione</button>
+        <button type="submit" className="btn-submit" disabled={submitting}>
+          {submitting ? 'Verifica posti…' : 'Conferma prenotazione'}
+        </button>
       </form>
     );
   }
