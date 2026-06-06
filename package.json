@@ -1,0 +1,11 @@
+{
+  "name": "sito-katia",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "setup-db": "node scripts/setup-db.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.3"
+  }
+}
