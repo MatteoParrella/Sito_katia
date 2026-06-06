@@ -41,8 +41,8 @@ async function sendBookingConfirmation({ first_name, last_name, email, lesson, c
           <p style="margin:0 0 28px;font-size:14px;color:#5a5750;line-height:1.7">Il tuo posto è riservato. Ti aspettiamo!</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f7f6;border-radius:10px;margin-bottom:28px;">
             <tr><td style="padding:20px 24px;">
-              <p style="margin:0 0 4px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7a9e9c">Lezione prenotata</p>
-              <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:20px;color:#2e5c5a">${lesson}</p>
+              <p style="margin:0 0 6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7a9e9c">Lezione prenotata</p>
+              <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:22px;color:#2e5c5a;line-height:1.3">${lesson}</p>
             </td></tr>
           </table>
           <p style="margin:0 0 12px;font-size:14px;color:#5a5750;line-height:1.7">Se non puoi partecipare, annulla la prenotazione con un ragionevole anticipo:</p>

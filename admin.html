@@ -241,6 +241,29 @@
     }
     .btn-modal-back:hover { background: var(--sage-200); }
 
+    /* ── WEEK NAV ── */
+    .week-nav {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+      background: var(--white); border-radius: var(--r-m); padding: 12px 18px;
+      border: 1px solid oklch(90% 0.055 148 / 0.3);
+    }
+    .week-nav-btn {
+      background: none; border: 1.5px solid oklch(90% 0.055 148 / 0.5);
+      border-radius: var(--r-xl); width: 32px; height: 32px;
+      cursor: pointer; font-size: 14px; color: var(--text-mid);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .week-nav-btn:hover { border-color: var(--sage-400); color: var(--sage-600); }
+    .week-nav-label { flex: 1; text-align: center; font-size: 13px; font-weight: 500; color: var(--text); }
+    .week-nav-today {
+      font-size: 11px; color: var(--sage-600); cursor: pointer;
+      letter-spacing: 0.06em; border: none; background: none;
+      font-family: inherit; padding: 4px 10px;
+      border-radius: var(--r-xl); transition: background 0.2s;
+    }
+    .week-nav-today:hover { background: var(--sage-50); }
+
     /* ── SHARED BUTTON ── */
     .btn-primary {
       padding: 11px 24px; border-radius: var(--r-xl);
@@ -297,8 +320,15 @@
 <div class="screen" id="screenDash">
   <div class="page">
     <div class="dash-header">
-      <h1 class="dash-title">Lezioni settimanali</h1>
+      <h1 class="dash-title">Lezioni</h1>
       <span class="dash-sub" id="dashSub"></span>
+    </div>
+    <!-- Week navigation -->
+    <div class="week-nav" id="weekNav">
+      <button class="week-nav-btn" onclick="changeWeek(-1)">←</button>
+      <span class="week-nav-label" id="weekNavLabel">—</span>
+      <button class="week-nav-btn" onclick="changeWeek(1)">→</button>
+      <button class="week-nav-today" onclick="goToCurrentWeek()">Oggi</button>
     </div>
     <div class="lessons-grid" id="lessonsGrid">
       <p style="color:var(--text-light);font-size:13px">Caricamento…</p>
@@ -334,10 +364,20 @@
 
 <script>
   const TOKEN_KEY = 'katia_admin_token';
-  let currentToken    = localStorage.getItem(TOKEN_KEY) || '';
-  let currentLessonId = null;
-  let pendingBookingId = null;
+  let currentToken     = localStorage.getItem(TOKEN_KEY) || '';
+  let currentLessonId  = null;
+  let currentLessonDate = null;
+  let pendingBookingId  = null;
   let pendingBookingName = null;
+  let currentMonday    = getCurrentMonday();
+  let weekData         = null; // { prevMonday, nextMonday, label }
+
+  function getCurrentMonday() {
+    const d = new Date(); d.setHours(0,0,0,0);
+    const day = d.getDay();
+    d.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+    return d.toISOString().slice(0,10);
+  }
 
   // ── Init ─────────────────────────────────────────────────
   if (currentToken) {
@@ -401,6 +441,17 @@
     showScreen('screenLogin');
   }
 
+  // ── Week navigation ──────────────────────────────────────
+  function changeWeek(direction) {
+    if (!weekData) return;
+    currentMonday = direction < 0 ? weekData.prevMonday : weekData.nextMonday;
+    showDash();
+  }
+  function goToCurrentWeek() {
+    currentMonday = getCurrentMonday();
+    showDash();
+  }
+
   // ── Dashboard ────────────────────────────────────────────
   async function showDash() {
     showScreen('screenDash');
@@ -408,13 +459,15 @@
     document.getElementById('lessonsGrid').innerHTML = '<p style="color:var(--text-light);font-size:13px"><span class="spinner">⟳</span> Caricamento…</p>';
 
     try {
-      const res  = await fetch('/api/admin/lessons', {
+      const res = await fetch(`/api/admin/lessons?monday=${currentMonday}`, {
         headers: { 'Authorization': `Bearer ${currentToken}` },
       });
 
       if (res.status === 401) { logout(); return; }
 
       const data = await res.json();
+      weekData = data.week || {};
+      document.getElementById('weekNavLabel').textContent = weekData.label || '';
       renderLessons(data.lessons || []);
 
     } catch (err) {
@@ -425,7 +478,7 @@
 
   function renderLessons(lessons) {
     const totalConfirmed = lessons.reduce((s, l) => s + parseInt(l.confirmed_count || 0), 0);
-    document.getElementById('dashSub').textContent = `${totalConfirmed} prenotazioni totali questa settimana`;
+    document.getElementById('dashSub').textContent = `${totalConfirmed} prenotazioni confermate`;
 
     if (lessons.length === 0) {
       document.getElementById('lessonsGrid').innerHTML = '<p style="color:var(--text-light)">Nessuna lezione trovata.</p>';
@@ -440,7 +493,7 @@
       const inactive = !l.is_active;
       return `
         <div class="lesson-card${inactive ? ' inactive' : ''}">
-          <div class="lesson-day">${l.day_of_week}${inactive ? ' · da concordare' : ''}</div>
+          <div class="lesson-day">${l.target_date_label || l.day_of_week}${inactive ? ' · da concordare' : ''}</div>
           <div class="lesson-time">${l.time}</div>
           <div class="lesson-course">${l.course_name}</div>
           <div class="lesson-count-row">
@@ -450,7 +503,7 @@
               </div>
               <span style="color:${isFull ? 'var(--red-btn)' : 'var(--text-mid)'}">${count}/${max}</span>
             </div>
-            ${!inactive ? `<button class="btn-view" onclick="showDetail('${l.id}','${l.day_of_week}','${l.time}','${l.course_name}',${count},${max})">Vedi →</button>` : ''}
+            ${!inactive ? `<button class="btn-view" onclick="showDetail('${l.id}','${l.target_date_label || l.day_of_week}','${l.time}','${l.course_name}',${count},${max},'${l.target_date}')">Vedi →</button>` : ''}
           </div>
           ${l.notes ? `<div class="lesson-notes">${l.notes}</div>` : ''}
         </div>
@@ -459,15 +512,17 @@
   }
 
   // ── Lesson detail ────────────────────────────────────────
-  async function showDetail(lessonId, day, time, course, count, max) {
-    currentLessonId = lessonId;
+  async function showDetail(lessonId, day, time, course, count, max, lessonDate) {
+    currentLessonId   = lessonId;
+    currentLessonDate = lessonDate || null;
     showScreen('screenDetail');
-    document.getElementById('detailTitle').textContent = `${day} ${time} — ${course}`;
-    document.getElementById('detailMeta').textContent  = `${count}/${max} posti occupati`;
+    document.getElementById('detailTitle').textContent = `${day} · ${time} — ${course}`;
+    document.getElementById('detailMeta').textContent  = `${count}/${max} confermati`;
     document.getElementById('bookingsTable').innerHTML = '<p style="color:var(--text-light);font-size:13px"><span class="spinner">⟳</span> Caricamento…</p>';
 
+    const dateParam = lessonDate ? `&lesson_date=${lessonDate}` : '';
     try {
-      const res  = await fetch(`/api/admin/bookings?lesson_id=${lessonId}`, {
+      const res  = await fetch(`/api/admin/bookings?lesson_id=${lessonId}${dateParam}`, {
         headers: { 'Authorization': `Bearer ${currentToken}` },
       });
 

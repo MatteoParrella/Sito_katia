@@ -329,6 +329,47 @@
     .info-bullet-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); }
     @media (max-width: 600px) { .info-card { padding: 36px 28px; } }
 
+    /* ── LESSON PICKER ── */
+    .lesson-picker { margin-bottom: 4px; }
+    .picker-week-tabs {
+      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+      padding-bottom: 2px; margin-bottom: 18px;
+    }
+    .picker-week-tabs::-webkit-scrollbar { display: none; }
+    .picker-week-tab {
+      flex-shrink: 0; padding: 6px 16px; border-radius: var(--r-xl);
+      border: 1.5px solid oklch(90% 0.055 148 / 0.5);
+      background: var(--cream); font-size: 12px; font-family: inherit;
+      cursor: pointer; color: var(--text-mid); transition: all 0.2s; white-space: nowrap;
+    }
+    .picker-week-tab.active { background: var(--sage-800); color: var(--white); border-color: var(--sage-800); }
+    .picker-week-tab:hover:not(.active) { border-color: var(--sage-400); color: var(--sage-600); }
+    .picker-day-label {
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-light); margin: 14px 0 8px;
+    }
+    .picker-slots { display: flex; flex-wrap: wrap; gap: 10px; }
+    .picker-slot {
+      flex: 1; min-width: 120px; padding: 14px 16px; border-radius: var(--r-m);
+      border: 1.5px solid oklch(90% 0.055 148 / 0.5); background: var(--cream);
+      cursor: pointer; transition: all 0.2s; text-align: left; position: relative;
+    }
+    .picker-slot:hover:not(.selected) { border-color: var(--sage-400); background: var(--sage-50); }
+    .picker-slot.selected { border-color: var(--sage-600); background: var(--sage-600); color: var(--white); }
+    .picker-slot-time {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px;
+      line-height: 1; margin-bottom: 4px; color: inherit;
+    }
+    .picker-slot-course { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+    .picker-slot-seats { font-size: 11px; opacity: 0.65; }
+    .picker-slot.selected .picker-slot-seats { opacity: 0.85; }
+    .picker-slot-check {
+      position: absolute; top: 10px; right: 12px;
+      font-size: 12px; color: var(--white);
+    }
+    .picker-empty { font-size: 13px; color: var(--text-light); padding: 12px 0; }
+    .picker-err { font-size: 11px; color: oklch(48% 0.13 25); margin-top: 6px; }
+
     /* ── BOOKING FORM ── */
     .booking-card {
       background: var(--white); border-radius: var(--r-l);
@@ -716,7 +757,103 @@
 
 <!-- ── REACT: Booking Form (collegato al database via API) ── -->
 <script type="text/babel">
-  const { useState, useEffect } = React;
+  const { useState, useEffect, useMemo } = React;
+
+  const IT_MONTHS_LONG  = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  const IT_MONTHS_SHORT = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+  const IT_DAYS         = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+
+  function getMondayOf(dateStr) {
+    const d = new Date(dateStr + 'T00:00:00Z');
+    const day = d.getUTCDay(); // 0=sun, 1=mon ...
+    d.setUTCDate(d.getUTCDate() - (day === 0 ? 6 : day - 1));
+    return d.toISOString().slice(0, 10);
+  }
+
+  function groupByWeek(lessons) {
+    const map = {};
+    for (const l of lessons) {
+      const monday = getMondayOf(l.lesson_date);
+      if (!map[monday]) map[monday] = [];
+      map[monday].push(l);
+    }
+    return Object.entries(map)
+      .sort(([a],[b]) => a.localeCompare(b))
+      .map(([monday, ls]) => {
+        const m = new Date(monday + 'T00:00:00Z');
+        const s = new Date(m); s.setUTCDate(m.getUTCDate() + 6);
+        const label = `${m.getUTCDate()} ${IT_MONTHS_SHORT[m.getUTCMonth()]} — ${s.getUTCDate()} ${IT_MONTHS_SHORT[s.getUTCMonth()]}`;
+        return { monday, label, lessons: ls };
+      });
+  }
+
+  function groupByDay(lessons) {
+    const map = {};
+    for (const l of lessons) {
+      if (!map[l.lesson_date]) {
+        const d = new Date(l.lesson_date + 'T00:00:00Z');
+        map[l.lesson_date] = {
+          date: l.lesson_date,
+          label: `${IT_DAYS[d.getUTCDay()]} ${d.getUTCDate()} ${IT_MONTHS_LONG[d.getUTCMonth()]}`,
+          lessons: [],
+        };
+      }
+      map[l.lesson_date].lessons.push(l);
+    }
+    return Object.values(map).sort((a,b) => a.date.localeCompare(b.date));
+  }
+
+  // ── iOS-style Lesson Picker ──────────────────────────────────
+  function LessonPicker({ lessons, value, onChange, disabled, error }) {
+    const weeks = useMemo(() => groupByWeek(lessons), [lessons]);
+    const [weekIdx, setWeekIdx] = useState(0);
+
+    if (disabled) return <div className="picker-empty">Caricamento lezioni…</div>;
+    if (!lessons.length) return <div className="picker-empty">Nessuna lezione disponibile nelle prossime settimane.</div>;
+
+    const currentWeek = weeks[weekIdx] || { lessons: [] };
+    const days = groupByDay(currentWeek.lessons);
+
+    return (
+      <div className="lesson-picker">
+        {weeks.length > 1 && (
+          <div className="picker-week-tabs">
+            {weeks.map((w, i) => (
+              <button
+                key={w.monday} type="button"
+                className={`picker-week-tab${i === weekIdx ? ' active' : ''}`}
+                onClick={() => { setWeekIdx(i); onChange(''); }}
+              >{w.label}</button>
+            ))}
+          </div>
+        )}
+        {days.map(day => (
+          <div key={day.date}>
+            <div className="picker-day-label">{day.label}</div>
+            <div className="picker-slots">
+              {day.lessons.map(l => {
+                const key = `${l.lesson_id}|${l.lesson_date}`;
+                const sel = value === key;
+                return (
+                  <div
+                    key={key}
+                    className={`picker-slot${sel ? ' selected' : ''}`}
+                    onClick={() => onChange(sel ? '' : key)}
+                  >
+                    <div className="picker-slot-time">{l.time}</div>
+                    <div className="picker-slot-course">{l.course_name}</div>
+                    <div className="picker-slot-seats">{l.slots_left} {l.slots_left === 1 ? 'posto' : 'posti'} liberi</div>
+                    {sel && <div className="picker-slot-check">✓</div>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+        {error && <p className="picker-err">{error}</p>}
+      </div>
+    );
+  }
 
   // ── Stato: Prenotazione confermata ───────────────────────────
   function StateConfirmed({ lessonLabel, nome, cancelToken, onReset }) {
@@ -906,21 +1043,14 @@
         {hasError && <div className="form-alert">Controlla i campi evidenziati e riprova.</div>}
 
         <div className="form-field">
-          <label className="form-label">Seleziona lezione</label>
-          <select
-            className={`form-select${errors.lesson_key ? ' err' : ''}`}
+          <label className="form-label" style={{marginBottom:'10px',display:'block'}}>Scegli lezione</label>
+          <LessonPicker
+            lessons={lessons}
             value={fields.lesson_key}
-            onChange={e => set('lesson_key', e.target.value)}
+            onChange={v => set('lesson_key', v)}
             disabled={loadingLessons}
-          >
-            <option value="">{loadingLessons ? 'Caricamento lezioni…' : '— Scegli data, orario e tipo —'}</option>
-            {lessons.map(l => (
-              <option key={`${l.lesson_id}|${l.lesson_date}`} value={`${l.lesson_id}|${l.lesson_date}`}>
-                {l.label}
-              </option>
-            ))}
-          </select>
-          {errors.lesson_key && <p className="form-err">{errors.lesson_key}</p>}
+            error={errors.lesson_key}
+          />
         </div>
 
         <div className="form-row">
