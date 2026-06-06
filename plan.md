@@ -690,7 +690,7 @@ Test:
 - verificare che dopo annullamento si possa prenotare di nuovo;
 - testare due prenotazioni ravvicinate.
 
-### Iterazione 5 — Link annullamento automatico
+### Iterazione 5 — Link annullamento automatico ✅ COMPLETATA (2026-06-06)
 
 Obiettivo: permettere all’utente di annullare in autonomia.
 

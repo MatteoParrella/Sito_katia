@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annulla prenotazione — Katia Teruzzi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400;1,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:     oklch(97.5% 0.009 88);
+      --sage-50:   oklch(96%   0.027 148);
+      --sage-100:  oklch(90%   0.055 148);
+      --sage-200:  oklch(80%   0.080 148);
+      --sage-400:  oklch(65%   0.098 148);
+      --sage-600:  oklch(48%   0.092 148);
+      --sage-800:  oklch(32%   0.072 148);
+      --sage-900:  oklch(22%   0.055 148);
+      --brown-100: oklch(92%   0.024 72);
+      --brown-800: oklch(34%   0.045 72);
+      --text:      oklch(21%   0.016 78);
+      --text-mid:  oklch(47%   0.020 78);
+      --text-light:oklch(64%   0.016 78);
+      --white: #ffffff;
+      --r-m: 16px; --r-l: 24px; --r-xl: 999px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--cream); color: var(--text);
+      min-height: 100vh; display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      height: 60px; padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: oklch(97.5% 0.009 88 / 0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid oklch(90% 0.055 148 / 0.3);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif; font-size: 18px;
+      font-style: italic; color: var(--sage-800); text-decoration: none;
+    }
+    .nav-back {
+      font-size: 12px; color: var(--text-mid); text-decoration: none;
+      letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--sage-600); }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 48px 24px;
+    }
+
+    .card {
+      background: var(--white); border-radius: var(--r-l);
+      padding: 52px 48px; max-width: 480px; width: 100%;
+      box-shadow: 0 4px 28px oklch(0% 0 0 / 0.07);
+      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      text-align: center;
+    }
+
+    .state-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px; font-size: 26px;
+    }
+    .icon-loading { background: var(--sage-50); animation: pulse 1.4s ease-in-out infinite; }
+    .icon-warn    { background: var(--brown-100); }
+    .icon-ok      { background: var(--sage-100); }
+    .icon-done    { background: var(--sage-50); }
+    .icon-error   { background: oklch(96% 0.015 25); }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.5; }
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 28px; color: var(--sage-800); margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .card-desc {
+      font-size: 14px; color: var(--text-mid); line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .booking-info {
+      background: var(--sage-50); border-radius: var(--r-m);
+      padding: 20px 24px; margin-bottom: 28px; text-align: left;
+    }
+    .booking-info-row {
+      display: flex; gap: 12px; font-size: 14px;
+      padding: 6px 0; border-bottom: 1px solid oklch(90% 0.055 148 / 0.3);
+    }
+    .booking-info-row:last-child { border-bottom: none; }
+    .booking-info-label {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-light); min-width: 80px; padding-top: 2px;
+    }
+    .booking-info-val { color: var(--text); font-weight: 500; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 13px 28px; border-radius: var(--r-xl);
+      font-size: 13px; font-weight: 500; font-family: inherit;
+      letter-spacing: 0.06em; cursor: pointer; border: none;
+      text-decoration: none; transition: all 0.2s; width: 100%;
+    }
+    .btn-cancel {
+      background: oklch(58% 0.14 25); color: var(--white);
+    }
+    .btn-cancel:hover { background: oklch(46% 0.13 25); transform: translateY(-1px); }
+    .btn-cancel:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-ghost {
+      background: var(--sage-100); color: var(--sage-800);
+      margin-top: 12px;
+    }
+    .btn-ghost:hover { background: var(--sage-200); }
+
+    footer {
+      text-align: center; padding: 20px;
+      font-size: 11px; color: var(--text-light); letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 32px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Katia Teruzzi</a>
+  <a href="/" class="nav-back">← Torna al sito</a>
+</nav>
+
+<main>
+  <div class="card" id="card">
+    <!-- Contenuto iniettato da JS -->
+    <div class="state-icon icon-loading">⟳</div>
+    <h1 class="card-title">Verifica in corso…</h1>
+    <p class="card-desc">Stiamo recuperando i dati della tua prenotazione.</p>
+  </div>
+</main>
+
+<footer>
+  © 2025 Katia Teruzzi · <a href="/" style="color:inherit">Torna al sito</a>
+</footer>
+
+<script>
+  const card  = document.getElementById('card');
+  const token = new URLSearchParams(window.location.search).get('token');
+
+  // ── Render helpers ───────────────────────────────────────
+  function renderLoading() {
+    card.innerHTML = `
+      <div class="state-icon icon-loading">⟳</div>
+      <h1 class="card-title">Verifica in corso…</h1>
+      <p class="card-desc">Stiamo recuperando i dati della tua prenotazione.</p>
+    `;
+  }
+
+  function renderNotFound() {
+    card.innerHTML = `
+      <div class="state-icon icon-error">✕</div>
+      <h1 class="card-title">Link non valido</h1>
+      <p class="card-desc">Il link di annullamento non è valido o è già stato utilizzato. Contatta Katia per assistenza.</p>
+      <a href="https://wa.me/393485525084" class="btn btn-ghost" style="background:var(--brown-100);color:var(--brown-800)">
+        Contatta su WhatsApp
+      </a>
+      <a href="/" class="btn btn-ghost">Torna al sito</a>
+    `;
+  }
+
+  function renderAlreadyCancelled(booking) {
+    card.innerHTML = `
+      <div class="state-icon icon-done">✕</div>
+      <h1 class="card-title">Già annullata</h1>
+      <p class="card-desc">Questa prenotazione risulta già annullata.</p>
+      <div class="booking-info">
+        <div class="booking-info-row">
+          <span class="booking-info-label">Nome</span>
+          <span class="booking-info-val">${booking.first_name} ${booking.last_name}</span>
+        </div>
+        <div class="booking-info-row">
+          <span class="booking-info-label">Lezione</span>
+          <span class="booking-info-val">${booking.lesson}</span>
+        </div>
+      </div>
+      <a href="/" class="btn btn-ghost">Torna al sito</a>
+    `;
+  }
+
+  function renderConfirm(booking) {
+    card.innerHTML = `
+      <div class="state-icon icon-warn">!</div>
+      <h1 class="card-title">Annulla prenotazione</h1>
+      <p class="card-desc">Stai per annullare la seguente prenotazione. L'azione è definitiva.</p>
+      <div class="booking-info">
+        <div class="booking-info-row">
+          <span class="booking-info-label">Nome</span>
+          <span class="booking-info-val">${booking.first_name} ${booking.last_name}</span>
+        </div>
+        <div class="booking-info-row">
+          <span class="booking-info-label">Lezione</span>
+          <span class="booking-info-val">${booking.lesson}</span>
+        </div>
+      </div>
+      <button class="btn btn-cancel" id="confirmBtn" onclick="doCancel()">
+        Conferma annullamento
+      </button>
+      <a href="/" class="btn btn-ghost">Non annullare — torna al sito</a>
+    `;
+  }
+
+  function renderCancelled() {
+    card.innerHTML = `
+      <div class="state-icon icon-ok">✓</div>
+      <h1 class="card-title">Prenotazione annullata</h1>
+      <p class="card-desc">La tua prenotazione è stata annullata correttamente. Il posto è ora disponibile per altri.</p>
+      <a href="/" class="btn btn-ghost">Torna al sito</a>
+    `;
+  }
+
+  function renderError(msg) {
+    card.innerHTML = `
+      <div class="state-icon icon-error">⚠</div>
+      <h1 class="card-title">Qualcosa è andato storto</h1>
+      <p class="card-desc">${msg || 'Errore del server. Riprova tra qualche minuto o contatta Katia.'}</p>
+      <button class="btn btn-ghost" onclick="loadBooking()">Riprova</button>
+      <a href="https://wa.me/393485525084" class="btn btn-ghost" style="background:var(--brown-100);color:var(--brown-800);margin-top:8px">
+        Contatta su WhatsApp
+      </a>
+    `;
+  }
+
+  // ── Load booking info ────────────────────────────────────
+  async function loadBooking() {
+    if (!token) { renderNotFound(); return; }
+
+    renderLoading();
+
+    try {
+      const res  = await fetch(`/api/cancel?token=${encodeURIComponent(token)}`);
+      const data = await res.json();
+
+      if (res.status === 404 || data.error === 'not_found') {
+        renderNotFound(); return;
+      }
+      if (!res.ok) {
+        renderError(data.error); return;
+      }
+      if (data.status === 'cancelled' || data.status === 'already_cancelled') {
+        renderAlreadyCancelled(data.booking); return;
+      }
+      if (data.status === 'confirmed') {
+        renderConfirm(data.booking); return;
+      }
+
+      renderError('Stato prenotazione sconosciuto.');
+
+    } catch (err) {
+      renderError('Impossibile contattare il server. Controlla la connessione.');
+    }
+  }
+
+  // ── Confirm cancellation ─────────────────────────────────
+  async function doCancel() {
+    const btn = document.getElementById('confirmBtn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Annullamento in corso…'; }
+
+    try {
+      const res  = await fetch('/api/cancel', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ token }),
+      });
+      const data = await res.json();
+
+      if (data.status === 'cancelled')          { renderCancelled(); return; }
+      if (data.status === 'already_cancelled')  { renderAlreadyCancelled(data.booking || {}); return; }
+      if (res.status === 404)                   { renderNotFound(); return; }
+
+      renderError(data.error || 'Errore del server.');
+
+    } catch (err) {
+      renderError('Impossibile contattare il server. Controlla la connessione.');
+    }
+  }
+
+  // ── Init ─────────────────────────────────────────────────
+  loadBooking();
+</script>
+</body>
+</html>
