@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Katia Terruzzi — Pilates e Movimento Consapevole · Arcore, Monza e Brianza</title>
-  <meta name="description" content="Lezioni di Pilates, Odaka Yoga, Nia e circuiti in piccoli gruppi ad Arcore. Prenota online il tuo posto — massimo 12 partecipanti, conferma immediata.">
+  <meta name="description" content="Lezioni di Pilates, Odaka Yoga, Nia e Ginnastica Posturale in piccoli gruppi ad Arcore. Prenota online il tuo posto — massimo 12 partecipanti, conferma immediata.">
   <meta property="og:title" content="Katia Terruzzi — Pilates e Movimento Consapevole">
-  <meta property="og:description" content="Lezioni in piccoli gruppi ad Arcore. Pilates, Odaka Yoga, Nia e circuiti. Prenota online.">
+  <meta property="og:description" content="Lezioni in piccoli gruppi ad Arcore. Pilates, Odaka Yoga, Nia e Ginnastica Posturale. Prenota online.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#4a7d7a">
   <link href="/fonts/fonts.css" rel="stylesheet">
@@ -219,6 +219,23 @@
       border-left: 2px solid var(--sage-400);
     }
     .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+    .about-cred { margin-top: 36px; }
+    .about-cred-title {
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--sage-600); margin-bottom: 14px; font-weight: 600;
+    }
+    .about-cred-list {
+      list-style: none; columns: 2; column-gap: 28px;
+      font-size: 13px; color: var(--text-mid); line-height: 1.6;
+    }
+    .about-cred-list li {
+      break-inside: avoid; padding: 4px 0 4px 16px; position: relative;
+    }
+    .about-cred-list li::before {
+      content: ''; position: absolute; left: 0; top: 12px;
+      width: 6px; height: 6px; border-radius: 50%; background: var(--sage-400);
+    }
+    @media (max-width: 640px) { .about-cred-list { columns: 1; } }
     .about-tag {
       font-size: 11px; letter-spacing: 0.06em; padding: 6px 16px;
       border-radius: var(--r-xl); background: var(--sage-100); color: var(--sage-800);
@@ -480,7 +497,7 @@
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-eyebrow">Pilates · Odaka Yoga · Nia · Circuiti · Arcore, Monza e Brianza</span>
+    <span class="hero-eyebrow">Pilates · Odaka Yoga · Nia · Ginnastica Posturale · Arcore, Monza e Brianza</span>
     <h1 class="hero-name">Katia<br>Terruzzi</h1>
     <p class="hero-tagline">Pilates e movimento consapevole</p>
     <p class="hero-desc">Lezioni in piccoli gruppi, con un approccio su misura. Ogni lezione è pensata per te, per il tuo corpo, per come ti senti oggi.</p>
@@ -518,15 +535,32 @@
       <div class="fi d2">
         <p class="s-tag">Chi sono</p>
         <h2 class="s-title">Katia Terruzzi</h2>
-        <p class="about-role">Odaka Yoga® RYT250 · Pilates Balanced body® · Nia® · Circuiti personalizzati</p>
-        <p class="about-bio">Ho scoperto il movimento come linguaggio — un modo per ascoltare il corpo, non solo allenarlo. Ogni lezione che propongo unisce la precisione del Pilates, la fluidità dell'Odaka Yoga, l'energia del Nia e la funzionalità dei circuiti. Un approccio su misura, che cambia e si adatta, perché ogni giorno sei diversa.</p>
+        <p class="about-role">Pilates Balanced Body® · Odaka Yoga® 250h plus · Nia® · Ginnastica Posturale</p>
+        <p class="about-bio">Ho scoperto il movimento come linguaggio — un modo per ascoltare il corpo, non solo allenarlo. Ogni lezione che propongo unisce la precisione del Pilates, la fluidità dell'Odaka Yoga, l'energia del Nia e l'attenzione all'allineamento della ginnastica posturale a circuito. Un approccio su misura, che cambia e si adatta, perché ogni giorno sei diversa.</p>
         <blockquote class="about-quote">"Non è solo esercizio. È movimento consapevole."</blockquote>
         <div class="about-tags">
-          <span class="about-tag">Pilates Balanced body®</span>
-          <span class="about-tag">Odaka Yoga® RYT250</span>
+          <span class="about-tag">Pilates Balanced Body®</span>
+          <span class="about-tag">Odaka Yoga® 250h plus</span>
           <span class="about-tag">Nia®</span>
-          <span class="about-tag">Circuiti</span>
+          <span class="about-tag">Ginnastica Posturale</span>
           <span class="about-tag">Piccoli gruppi</span>
+        </div>
+        <div class="about-cred">
+          <h3 class="about-cred-title">Formazione e certificazioni</h3>
+          <ul class="about-cred-list">
+            <li>Balanced Body® Movement Principles</li>
+            <li>Balanced Body® Reformer 1, 2 e 3</li>
+            <li>Balanced Body® Matwork 1, 2 e 3</li>
+            <li>Mindful Movement Anatomy</li>
+            <li>Odaka Yoga® 250h plus</li>
+            <li>Odaka Yoga® Trauma Informed</li>
+            <li>Odaka Yoga® The Art of Adjustment</li>
+            <li>Istruttore livello 1 e 2 — Tecnico Specialista in Ginnastica Educativa e Rieducativa</li>
+            <li>Nia® Technique White Belt Intensive Training</li>
+            <li>Nia® Moving to Heal Training</li>
+            <li>Nia® DJ's Freedance Training</li>
+            <li>Nia® Move IT and 52 Moves Training</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -567,7 +601,7 @@
         </div>
         <div class="course-card-body">
           <h3 class="course-name">Mix</h3>
-          <p class="course-desc">Ogni settimana una disciplina diversa, a rotazione: <strong>Pilates</strong>, <strong>Odaka Yoga</strong>, <strong>Nia</strong> o <strong>Circuiti personalizzati</strong>. Un programma vario che lavora su mobilità, coordinazione, energia e benessere globale del corpo.</p>
+          <p class="course-desc">Ogni settimana una disciplina diversa, a rotazione: <strong>Pilates</strong>, <strong>Odaka Yoga</strong>, <strong>Nia</strong> o <strong>Ginnastica Posturale</strong> con allenamento a circuito. Un programma vario che lavora su allineamento posturale, respirazione, mobilità, coordinazione, energia e benessere globale del corpo.</p>
           <p class="course-benefit">Varietà, equilibrio e benessere globale</p>
           <a href="#prenota" class="btn-book">Prenota →</a>
         </div>
