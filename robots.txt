@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /annulla
+
+Sitemap: https://sito-katia.vercel.app/sitemap.xml

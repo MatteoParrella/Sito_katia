@@ -1,0 +1,7 @@
+# Documenti interni — non devono essere pubblicati
+PRESENTAZIONE.html
+plan.md
+
+# Sviluppo — non servono a runtime
+scripts
+supabase
