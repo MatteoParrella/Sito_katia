@@ -3,18 +3,17 @@
 
 const { Client } = require('pg');
 const { checkAuth, unauthorized } = require('../_auth');
+const { applyCors } = require('../_http');
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  applyCors(req, res, { methods: 'GET, POST, OPTIONS', headers: 'Content-Type, Authorization' });
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (!checkAuth(req))          return unauthorized(res);
 
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: { rejectUnauthorized: true },
   });
 
   // ── GET: list bookings ───────────────────────────────────────

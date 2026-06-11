@@ -25,14 +25,17 @@ function formatLabel(day, dateStr, time, course) {
   return `${day} ${d.getUTCDate()} ${IT_MONTHS[d.getUTCMonth()]} · ${time} — ${course}`;
 }
 
-module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+const { applyCors } = require('./_http');
 
+module.exports = async (req, res) => {
+  applyCors(req, res, { methods: 'GET, OPTIONS' });
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: { rejectUnauthorized: true },
   });
 
   try {

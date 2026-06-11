@@ -4,22 +4,24 @@
 
 const { Client } = require('pg');
 const { sendAdminCancellation } = require('./_email');
+const { applyCors, rateLimit } = require('./_http');
 
 async function createClient() {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: { rejectUnauthorized: true },
   });
   await client.connect();
   return client;
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  applyCors(req, res, { methods: 'GET, POST, OPTIONS' });
 
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // Max 20 requests per IP per 10 minutes (also slows token guessing)
+  if (!rateLimit(req, res, { key: 'cancel', max: 20, windowMs: 10 * 60 * 1000 })) return;
 
   // ── GET: fetch booking info ──────────────────────────────
   if (req.method === 'GET') {

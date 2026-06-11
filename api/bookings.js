@@ -2,6 +2,7 @@
 
 const { Client } = require('pg');
 const { sendBookingConfirmation, sendAdminNewBooking } = require('./_email');
+const { applyCors, rateLimit } = require('./_http');
 
 const IT_MONTHS = ['gennaio','febbraio','marzo','aprile','maggio','giugno',
                    'luglio','agosto','settembre','ottobre','novembre','dicembre'];
@@ -21,12 +22,13 @@ function validateDate(dateStr) {
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  applyCors(req, res, { methods: 'POST, OPTIONS' });
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+
+  // Max 10 bookings per IP per 10 minutes
+  if (!rateLimit(req, res, { key: 'bookings', max: 10, windowMs: 10 * 60 * 1000 })) return;
 
   const { lesson_id, lesson_date, first_name, last_name, email, phone } = req.body || {};
 
@@ -48,7 +50,7 @@ module.exports = async (req, res) => {
 
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: { rejectUnauthorized: true },
   });
 
   try {

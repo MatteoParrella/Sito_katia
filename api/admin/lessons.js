@@ -2,6 +2,7 @@
 
 const { Client } = require('pg');
 const { checkAuth, unauthorized } = require('../_auth');
+const { applyCors } = require('../_http');
 
 const IT_MONTHS = ['gennaio','febbraio','marzo','aprile','maggio','giugno',
                    'luglio','agosto','settembre','ottobre','novembre','dicembre'];
@@ -36,9 +37,7 @@ function formatWeekLabel(mondayStr) {
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  applyCors(req, res, { methods: 'GET, OPTIONS', headers: 'Content-Type, Authorization' });
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (!checkAuth(req))          return unauthorized(res);
@@ -55,7 +54,7 @@ module.exports = async (req, res) => {
 
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: { rejectUnauthorized: true },
   });
 
   try {
