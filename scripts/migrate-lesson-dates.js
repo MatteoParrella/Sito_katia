@@ -8,7 +8,7 @@ const { Client } = require('pg');
 async function main() {
   if (!process.env.DATABASE_URL) { console.error('❌ DATABASE_URL mancante'); process.exit(1); }
 
-  const client = new Client({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+  const client = new Client({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: true } });
   await client.connect();
 
   try {

@@ -2,6 +2,7 @@
 // File starts with _ so Vercel doesn't expose it as a route
 
 const nodemailer = require('nodemailer');
+const { escapeHtml } = require('./_http');
 
 const SITE         = process.env.SITE_URL          || 'https://sito-katia.vercel.app';
 const GMAIL_USER   = process.env.GMAIL_USER        || 'parrellamatteo24@gmail.com';
@@ -18,7 +19,9 @@ function createTransport() {
 
 // ── 1. Conferma prenotazione → utente ────────────────────────
 async function sendBookingConfirmation({ first_name, last_name, email, lesson, cancel_token }) {
-  const cancelUrl   = `${SITE}/annulla?token=${cancel_token}`;
+  first_name = escapeHtml(first_name);
+  last_name  = escapeHtml(last_name);
+  const cancelUrl   = `${SITE}/annulla?token=${encodeURIComponent(cancel_token)}`;
   const transporter = createTransport();
 
   await transporter.sendMail({
@@ -54,7 +57,7 @@ async function sendBookingConfirmation({ first_name, last_name, email, lesson, c
           <p style="margin:20px 0 0;font-size:11px;color:#9a9590;text-align:center;word-break:break-all">Oppure apri: ${cancelUrl}</p>
         </td></tr>
         <tr><td style="background:#f4efe8;padding:20px 40px;text-align:center;">
-          <p style="margin:0;font-size:11px;color:#9a9590">© 2025 Katia Terruzzi · Arcore, Monza e Brianza</p>
+          <p style="margin:0;font-size:11px;color:#9a9590">© ${new Date().getFullYear()} Katia Terruzzi · Arcore, Monza e Brianza</p>
           <p style="margin:4px 0 0;font-size:11px;color:#9a9590">
             <a href="https://wa.me/393485525084" style="color:#4a7d7a;text-decoration:none">WhatsApp</a> &nbsp;·&nbsp;
             <a href="mailto:katiaterruzzi@gmail.com" style="color:#4a7d7a;text-decoration:none">katiaterruzzi@gmail.com</a>
@@ -70,6 +73,10 @@ async function sendBookingConfirmation({ first_name, last_name, email, lesson, c
 
 // ── 2. Nuova prenotazione → admin ────────────────────────────
 async function sendAdminNewBooking({ first_name, last_name, email, phone, lesson }) {
+  first_name = escapeHtml(first_name);
+  last_name  = escapeHtml(last_name);
+  email      = escapeHtml(email);
+  phone      = escapeHtml(phone);
   const transporter = createTransport();
 
   await transporter.sendMail({
@@ -96,6 +103,9 @@ async function sendAdminNewBooking({ first_name, last_name, email, phone, lesson
 
 // ── 3. Prenotazione annullata → admin ────────────────────────
 async function sendAdminCancellation({ first_name, last_name, email, lesson, source }) {
+  first_name = escapeHtml(first_name);
+  last_name  = escapeHtml(last_name);
+  email      = escapeHtml(email);
   const transporter = createTransport();
   const byWhom      = source === 'admin' ? 'da te (admin)' : "dall'utente";
 
