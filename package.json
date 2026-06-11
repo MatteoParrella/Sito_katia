@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "nodemailer": "^8.0.10",
-    "pg": "^8.13.3",
-    "resend": "^6.12.4"
+    "pg": "^8.13.3"
   }
 }
