@@ -246,6 +246,19 @@
       .about-portrait-deco { display: none; }
     }
 
+    /* ── DISCIPLINE ── */
+    .disc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+    .disc-card {
+      background: var(--white); border-radius: var(--r-m);
+      padding: 32px 28px;
+      border: 1px solid oklch(90% 0.055 148 / 0.35);
+      box-shadow: 0 2px 12px oklch(0% 0 0 / 0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .disc-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px oklch(0% 0 0 / 0.08); }
+    .disc-name { font-size: 22px; font-style: italic; color: var(--sage-800); margin-bottom: 10px; }
+    .disc-desc { font-size: 13px; color: var(--text-mid); line-height: 1.75; }
+
     /* ── COURSES ── */
     .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; max-width: 820px; margin: 0 auto; }
     .course-card {
@@ -475,6 +488,7 @@
   <a href="#top" class="nav-logo">Katia Terruzzi</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#chi-sono">Chi sono</a></li>
+    <li><a href="#discipline">Discipline</a></li>
     <li><a href="#corsi">Corsi</a></li>
     <li><a href="#orari">Orari</a></li>
     <li><a href="#prenota">Prenota</a></li>
@@ -536,11 +550,7 @@
         <p class="s-tag">Chi sono</p>
         <h2 class="s-title">Katia Terruzzi</h2>
         <p class="about-role">Pilates Balanced Body® · Odaka Yoga® 250h plus · Nia® · Ginnastica Posturale</p>
-        <p class="about-bio">Sono Katia Terruzzi, istruttrice di movimento con base ad Arcore, in Brianza. Mi sono formata nel corso degli anni in quattro discipline complementari — Pilates Balanced Body®, Odaka Yoga®, Nia® e Ginnastica Posturale — perché credo che il benessere del corpo nasca dall'unione di precisione, consapevolezza e piacere del movimento.</p>
-        <p class="about-bio">Nel <strong>Pilates</strong> l'attenzione va alla respirazione, all'allineamento della colonna vertebrale e del bacino, e alla qualità del movimento — non alla quantità di ripetizioni. Si lavora sul centro, cioè sui muscoli profondi dell'addome e del cingolo scapolare, per ottenere un controllo che coinvolge tutto il corpo contemporaneamente. Un metodo flessibile, adatto dai principianti agli avanzati, utile per il recupero da infortuni, la prestazione sportiva e una postura sana nel tempo.</p>
-        <p class="about-bio"><strong>Odaka Yoga®</strong> è uno stile contemporaneo nato dalla visione di Roberto Milletti e Francesca Cassia. Guida gli allievi a conoscere il proprio corpo e le sensazioni che il movimento dona, con particolare attenzione alla biomeccanica della colonna e al rispetto dei propri limiti. Il lavoro sul tessuto connettivo libera i muscoli, permette una mobilità più ampia e crea movimento anche nella mente.</p>
-        <p class="about-bio"><strong>Nia®</strong> (Neuromuscular Integrative Action) è una pratica di movimento sensoriale che allena il corpo in modo cardiovascolare e consapevole. Attraverso musiche scelte e movimenti organici si lavora su tonicità, equilibrio, flessibilità, agilità e stabilità, arrivando gradualmente dall'attivazione muscolare fino al rilassamento. È una disciplina per tutti, che sviluppa consapevolezza corporea e riscoperta del sé.</p>
-        <p class="about-bio">La <strong>Ginnastica Posturale</strong> a circuito integra i principi dell'allineamento posturale e della respirazione diaframmatica con indicazioni personalizzate, tenendo conto del livello atletico di ciascuna partecipante e, quando necessario, delle indicazioni di medici, fisioterapisti o osteopati.</p>
+        <p class="about-bio">Sono Katia Terruzzi, istruttrice di movimento ad Arcore, in Brianza. Mi sono formata in quattro discipline complementari — Pilates Balanced Body®, Odaka Yoga®, Nia® e Ginnastica Posturale — perché credo che il benessere nasca dall'unione di precisione, consapevolezza e piacere del movimento. Ogni lezione è costruita su chi ho davanti: il corpo, la storia e le esigenze di ogni persona.</p>
         <blockquote class="about-quote">"Non è solo esercizio. È movimento consapevole."</blockquote>
         <div class="about-tags">
           <span class="about-tag">Pilates Balanced Body®</span>
@@ -571,8 +581,37 @@
   </div>
 </section>
 
+<!-- ── DISCIPLINE ── -->
+<section class="section" id="discipline">
+  <div class="container">
+    <div class="s-header-center fi">
+      <p class="s-tag">Il metodo</p>
+      <h2 class="s-title">Le discipline</h2>
+      <p class="s-desc">Quattro approcci complementari al movimento, per lavorare su corpo e mente in modo completo.</p>
+    </div>
+    <div class="disc-grid">
+      <div class="disc-card fi d1">
+        <h3 class="disc-name">Pilates Balanced Body®</h3>
+        <p class="disc-desc">Respirazione, allineamento della colonna e controllo del centro. Qualità del movimento prima della quantità — adatto dai principianti agli avanzati, anche per il recupero da infortuni e una postura sana.</p>
+      </div>
+      <div class="disc-card fi d2">
+        <h3 class="disc-name">Odaka Yoga®</h3>
+        <p class="disc-desc">Stile contemporaneo nato dalla visione di Roberto Milletti e Francesca Cassia. Ascolto del corpo, biomeccanica della colonna e lavoro sul tessuto connettivo, per fluidità e mobilità profonda.</p>
+      </div>
+      <div class="disc-card fi d3">
+        <h3 class="disc-name">Nia®</h3>
+        <p class="disc-desc">Movimento sensoriale e allenamento cardiovascolare consapevole. Musica e movimenti organici per tonicità, equilibrio, flessibilità e agilità — adattabile a ogni condizione fisica.</p>
+      </div>
+      <div class="disc-card fi d4">
+        <h3 class="disc-name">Ginnastica Posturale</h3>
+        <p class="disc-desc">Allenamento a circuito basato su allineamento posturale e respirazione diaframmatica, personalizzato sulle esigenze di ognuno e sulle eventuali indicazioni di medico, fisioterapista od osteopata.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── CORSI ── -->
-<section class="section" id="corsi">
+<section class="section section-alt" id="corsi">
   <div class="container">
     <div class="s-header-center fi">
       <p class="s-tag">I corsi</p>
