@@ -219,23 +219,29 @@
       border-left: 2px solid var(--sage-400);
     }
     .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
-    .about-cred { margin-top: 36px; }
+    .about-cred {
+      margin-top: 72px; padding-top: 52px;
+      border-top: 1px solid oklch(90% 0.055 148 / 0.45);
+    }
     .about-cred-title {
-      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--sage-600); margin-bottom: 14px; font-weight: 600;
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--sage-600); margin-bottom: 24px; font-weight: 600;
+      text-align: center;
     }
     .about-cred-list {
-      list-style: none; columns: 2; column-gap: 28px;
-      font-size: 13px; color: var(--text-mid); line-height: 1.6;
+      list-style: none; columns: 3; column-gap: 40px;
+      font-size: 13px; color: var(--text-mid); line-height: 1.65;
+      max-width: 920px; margin: 0 auto;
     }
     .about-cred-list li {
-      break-inside: avoid; padding: 4px 0 4px 16px; position: relative;
+      break-inside: avoid; padding: 5px 0 5px 18px; position: relative;
     }
     .about-cred-list li::before {
-      content: ''; position: absolute; left: 0; top: 12px;
-      width: 6px; height: 6px; border-radius: 50%; background: var(--sage-400);
+      content: ''; position: absolute; left: 0; top: 13px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--sage-400);
     }
-    @media (max-width: 640px) { .about-cred-list { columns: 1; } }
+    @media (max-width: 900px) { .about-cred-list { columns: 2; } }
+    @media (max-width: 600px) { .about-cred-list { columns: 1; } .about-cred { margin-top: 52px; padding-top: 40px; } }
     .about-tag {
       font-size: 11px; letter-spacing: 0.06em; padding: 6px 16px;
       border-radius: var(--r-xl); background: var(--sage-100); color: var(--sage-800);
@@ -247,17 +253,36 @@
     }
 
     /* ── DISCIPLINE ── */
-    .disc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
-    .disc-card {
-      background: var(--white); border-radius: var(--r-m);
-      padding: 32px 28px;
-      border: 1px solid oklch(90% 0.055 148 / 0.35);
-      box-shadow: 0 2px 12px oklch(0% 0 0 / 0.04);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .disc-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px;
+      max-width: 920px; margin: 0 auto;
     }
-    .disc-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px oklch(0% 0 0 / 0.08); }
-    .disc-name { font-size: 22px; font-style: italic; color: var(--sage-800); margin-bottom: 10px; }
-    .disc-desc { font-size: 13px; color: var(--text-mid); line-height: 1.75; }
+    .disc-card {
+      background: var(--white); border-radius: var(--r-l);
+      padding: 42px 38px;
+      border: 1px solid oklch(90% 0.055 148 / 0.35);
+      box-shadow: 0 2px 14px oklch(0% 0 0 / 0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      position: relative; overflow: hidden;
+    }
+    .disc-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(to right, var(--sage-400), var(--sage-200));
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .disc-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px oklch(0% 0 0 / 0.09); border-color: oklch(80% 0.08 148 / 0.5); }
+    .disc-card:hover::before { opacity: 1; }
+    .disc-num {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 15px; letter-spacing: 0.14em; color: var(--sage-400);
+      display: block; margin-bottom: 16px;
+    }
+    .disc-name { font-size: 25px; font-style: italic; color: var(--sage-800); margin-bottom: 12px; }
+    .disc-desc { font-size: 13.5px; color: var(--text-mid); line-height: 1.8; }
+    @media (max-width: 700px) {
+      .disc-grid { grid-template-columns: 1fr; }
+      .disc-card { padding: 32px 28px; }
+    }
 
     /* ── COURSES ── */
     .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; max-width: 820px; margin: 0 auto; }
@@ -559,30 +584,36 @@
           <span class="about-tag">Ginnastica Posturale</span>
           <span class="about-tag">Piccoli gruppi</span>
         </div>
-        <div class="about-cred">
-          <h3 class="about-cred-title">Formazione e certificazioni</h3>
-          <ul class="about-cred-list">
-            <li>Balanced Body® Movement Principles</li>
-            <li>Balanced Body® Reformer 1, 2 e 3</li>
-            <li>Balanced Body® Matwork 1, 2 e 3</li>
-            <li>Mindful Movement Anatomy</li>
-            <li>Odaka Yoga® 250h plus</li>
-            <li>Odaka Yoga® Trauma Informed</li>
-            <li>Odaka Yoga® The Art of Adjustment</li>
-            <li>Istruttore livello 1 e 2 — Tecnico Specialista in Ginnastica Educativa e Rieducativa</li>
-            <li>Nia® Technique White Belt Intensive Training</li>
-            <li>Nia® Moving to Heal Training</li>
-            <li>Nia® DJ's Freedance Training</li>
-            <li>Nia® Move IT and 52 Moves Training</li>
-          </ul>
-        </div>
       </div>
+    </div>
+    <div class="about-cred fi d3">
+      <h3 class="about-cred-title">Formazione e certificazioni</h3>
+      <ul class="about-cred-list">
+        <li>Balanced Body® Movement Principles</li>
+        <li>Balanced Body® Reformer 1, 2 e 3</li>
+        <li>Balanced Body® Matwork 1, 2 e 3</li>
+        <li>Mindful Movement Anatomy</li>
+        <li>Odaka Yoga® 250h plus</li>
+        <li>Odaka Yoga® Trauma Informed</li>
+        <li>Odaka Yoga® The Art of Adjustment</li>
+        <li>Istruttore livello 1 e 2 — Tecnico Specialista in Ginnastica Educativa e Rieducativa</li>
+        <li>Nia® Technique White Belt Intensive Training</li>
+        <li>Nia® Moving to Heal Training</li>
+        <li>Nia® DJ's Freedance Training</li>
+        <li>Nia® Move IT and 52 Moves Training</li>
+      </ul>
     </div>
   </div>
 </section>
 
+<div class="section-divider" aria-hidden="true" style="padding-top:64px">
+  <div class="section-divider-line"></div>
+  <span class="section-divider-leaf">✦</span>
+  <div class="section-divider-line"></div>
+</div>
+
 <!-- ── DISCIPLINE ── -->
-<section class="section" id="discipline">
+<section class="section" id="discipline" style="padding-top:64px">
   <div class="container">
     <div class="s-header-center fi">
       <p class="s-tag">Il metodo</p>
@@ -591,18 +622,22 @@
     </div>
     <div class="disc-grid">
       <div class="disc-card fi d1">
+        <span class="disc-num">01</span>
         <h3 class="disc-name">Pilates Balanced Body®</h3>
         <p class="disc-desc">Respirazione, allineamento della colonna e controllo del centro. Qualità del movimento prima della quantità — adatto dai principianti agli avanzati, anche per il recupero da infortuni e una postura sana.</p>
       </div>
       <div class="disc-card fi d2">
+        <span class="disc-num">02</span>
         <h3 class="disc-name">Odaka Yoga®</h3>
         <p class="disc-desc">Stile contemporaneo nato dalla visione di Roberto Milletti e Francesca Cassia. Ascolto del corpo, biomeccanica della colonna e lavoro sul tessuto connettivo, per fluidità e mobilità profonda.</p>
       </div>
       <div class="disc-card fi d3">
+        <span class="disc-num">03</span>
         <h3 class="disc-name">Nia®</h3>
         <p class="disc-desc">Movimento sensoriale e allenamento cardiovascolare consapevole. Musica e movimenti organici per tonicità, equilibrio, flessibilità e agilità — adattabile a ogni condizione fisica.</p>
       </div>
       <div class="disc-card fi d4">
+        <span class="disc-num">04</span>
         <h3 class="disc-name">Ginnastica Posturale</h3>
         <p class="disc-desc">Allenamento a circuito basato su allineamento posturale e respirazione diaframmatica, personalizzato sulle esigenze di ognuno e sulle eventuali indicazioni di medico, fisioterapista od osteopata.</p>
       </div>
