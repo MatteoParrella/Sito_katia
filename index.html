@@ -530,6 +530,43 @@
     .fi.d5 { transition-delay: 0.5s; }
 
     @media (max-width: 768px) { .section { padding: 80px 0; } }
+
+    /* ── MOBILE / TOUCH ── */
+    html { -webkit-tap-highlight-color: transparent; }
+
+    /* Su touch non esiste il hover: i link "Prenota" devono essere sempre visibili */
+    @media (hover: none) {
+      .sched-book-link { opacity: 1; }
+    }
+
+    @media (max-width: 700px) {
+      .nav { padding: 0 20px; }
+      .nav-cta { padding: 8px 16px; font-size: 11px; }
+      .mood-strip { height: 220px; }
+      /* 16px evita lo zoom automatico di iOS al focus dei campi */
+      .form-input, .form-select { font-size: 16px; }
+      .sched-slot { padding: 14px 18px; gap: 12px; }
+      .sched-time { min-width: 56px; font-size: 19px; }
+      .sched-book-link { font-size: 12px; padding: 6px 0 6px 10px; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 22px; }
+      .hero-eyebrow { font-size: 9px; letter-spacing: 0.16em; line-height: 2; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-hero-p, .btn-hero-s { justify-content: center; padding: 15px 24px; }
+      .s-header-center { margin-bottom: 44px; }
+      .about-tags { gap: 8px; }
+      .about-quote { font-size: 19px; padding-left: 16px; }
+      .info-bullets { gap: 24px; }
+      .info-bullet-num { font-size: 32px; }
+      .picker-slot { min-width: calc(50% - 5px); }
+      .contacts-grid { grid-template-columns: 1fr; }
+      .contacts-title { margin-bottom: 36px; }
+      .state-wrap { padding: 40px 16px; }
+      .sched-note { font-size: 9px; }
+      footer { padding: 20px 16px; font-size: 10px; }
+    }
   </style>
 </head>
 <body>
