@@ -110,13 +110,17 @@
     .nav-cta:hover { background: var(--sage-800); transform: translateY(-1px); }
     .nav-toggle {
       display: none; background: none; border: none;
-      cursor: pointer; padding: 4px; flex-direction: column; gap: 5px;
+      cursor: pointer; width: 44px; height: 44px;
+      flex-direction: column; align-items: center; justify-content: center; gap: 5px;
     }
     .nav-toggle span {
       display: block; width: 22px; height: 1.5px;
       background: var(--malva-800); border-radius: 2px;
-      transition: all 0.3s;
+      transition: transform 0.3s, opacity 0.3s;
     }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
     @media (max-width: 700px) {
       .nav-links { display: none; }
       .nav-links.open {
@@ -1471,8 +1475,14 @@ ReactDOM.createRoot(document.getElementById('booking-root')).render(/*#__PURE__*
   // Mobile nav toggle
   const navToggle = document.getElementById('navToggle');
   const navLinks  = document.getElementById('navLinks');
-  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+  }));
 </script>
 
 </body>
