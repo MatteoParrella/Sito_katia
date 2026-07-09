@@ -11,15 +11,15 @@
 
     :root {
       --cream:      oklch(97.5% 0.009 88);
-      --sage-50:    oklch(96%   0.027 148);
-      --sage-100:   oklch(90%   0.055 148);
-      --sage-200:   oklch(80%   0.080 148);
-      --sage-400:   oklch(65%   0.098 148);
-      --sage-600:   oklch(48%   0.092 148);
-      --sage-800:   oklch(32%   0.072 148);
-      --sage-900:   oklch(22%   0.055 148);
-      --brown-100:  oklch(92%   0.024 72);
-      --brown-800:  oklch(34%   0.045 72);
+      --sage-50:    oklch(96%   0.027 20);
+      --sage-100:   oklch(90%   0.055 20);
+      --sage-200:   oklch(80%   0.080 20);
+      --sage-400:   oklch(65%   0.098 20);
+      --sage-600:   oklch(48%   0.092 20);
+      --sage-800:   oklch(32%   0.072 20);
+      --sage-900:   oklch(22%   0.055 20);
+      --brown-100:  oklch(92%   0.024 148);
+      --brown-800:  oklch(34%   0.045 148);
       --red-bg:     oklch(96%   0.015 25);
       --red-border: oklch(80%   0.07  25);
       --red-text:   oklch(40%   0.12  25);
@@ -53,17 +53,17 @@
     }
     .topbar-badge {
       font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: oklch(55% 0.04 148); padding: 3px 8px;
-      border: 1px solid oklch(35% 0.05 148); border-radius: 4px;
+      color: oklch(55% 0.04 20); padding: 3px 8px;
+      border: 1px solid oklch(35% 0.05 20); border-radius: 4px;
     }
     .topbar-right { display: flex; align-items: center; gap: 12px; }
     .btn-logout {
-      font-size: 11px; letter-spacing: 0.08em; color: oklch(55% 0.04 148);
-      background: none; border: 1px solid oklch(35% 0.05 148);
+      font-size: 11px; letter-spacing: 0.08em; color: oklch(55% 0.04 20);
+      background: none; border: 1px solid oklch(35% 0.05 20);
       border-radius: var(--r-xl); padding: 5px 14px; cursor: pointer;
       font-family: inherit; transition: all 0.2s;
     }
-    .btn-logout:hover { color: oklch(75% 0.015 90); border-color: oklch(50% 0.06 148); }
+    .btn-logout:hover { color: oklch(75% 0.015 90); border-color: oklch(50% 0.06 20); }
 
     /* ── LAYOUT ── */
     .page { max-width: 960px; margin: 0 auto; padding: 36px 24px; }
@@ -81,7 +81,7 @@
       background: var(--white); border-radius: var(--r-l);
       padding: 48px 44px; max-width: 380px; width: 100%;
       box-shadow: 0 4px 24px oklch(0% 0 0 / 0.07);
-      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      border: 1px solid oklch(90% 0.055  20 / 0.3);
       text-align: center;
     }
     .login-title {
@@ -96,7 +96,7 @@
     }
     .login-input {
       width: 100%; padding: 11px 14px; border-radius: var(--r-s);
-      border: 1.5px solid oklch(90% 0.055 148 / 0.5);
+      border: 1.5px solid oklch(90% 0.055  20 / 0.5);
       font-size: 14px; font-family: inherit; background: var(--cream);
       outline: none; transition: border-color 0.2s;
     }
@@ -121,7 +121,7 @@
     }
     .lesson-card {
       background: var(--white); border-radius: var(--r-l); padding: 20px 22px;
-      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      border: 1px solid oklch(90% 0.055  20 / 0.3);
       box-shadow: 0 1px 6px oklch(0% 0 0 / 0.04);
       transition: box-shadow 0.2s, transform 0.2s;
     }
@@ -170,15 +170,15 @@
     th {
       padding: 10px 14px; text-align: left; font-size: 10px;
       letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--text-light); border-bottom: 1px solid oklch(90% 0.055 148 / 0.3);
+      color: var(--text-light); border-bottom: 1px solid oklch(90% 0.055  20 / 0.3);
       white-space: nowrap;
     }
     td {
-      padding: 12px 14px; border-bottom: 1px solid oklch(90% 0.055 148 / 0.15);
+      padding: 12px 14px; border-bottom: 1px solid oklch(90% 0.055  20 / 0.15);
       color: var(--text); vertical-align: middle;
     }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: oklch(98% 0.01 148); }
+    tr:hover td { background: oklch(98% 0.01 20); }
     tr.cancelled td { opacity: 0.45; }
 
     .status-badge {
@@ -200,7 +200,7 @@
       text-align: center; padding: 48px 24px;
       color: var(--text-light); font-size: 14px;
       background: var(--white); border-radius: var(--r-l);
-      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      border: 1px solid oklch(90% 0.055  20 / 0.3);
     }
 
     /* ── MODAL ── */
@@ -244,10 +244,10 @@
     .week-nav {
       display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
       background: var(--white); border-radius: var(--r-m); padding: 12px 18px;
-      border: 1px solid oklch(90% 0.055 148 / 0.3);
+      border: 1px solid oklch(90% 0.055  20 / 0.3);
     }
     .week-nav-btn {
-      background: none; border: 1.5px solid oklch(90% 0.055 148 / 0.5);
+      background: none; border: 1.5px solid oklch(90% 0.055  20 / 0.5);
       border-radius: var(--r-xl); width: 32px; height: 32px;
       cursor: pointer; font-size: 14px; color: var(--text-mid);
       display: flex; align-items: center; justify-content: center;
