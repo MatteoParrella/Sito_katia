@@ -26,7 +26,8 @@
       border-bottom: 1px solid oklch(90% 0.055  20 / 0.3);
       position: sticky; top: 0; z-index: 100;
     }
-    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: var(--sage-800); text-decoration: none; }
+    .nav-logo { display: flex; align-items: center; gap: 9px; flex-shrink: 0; white-space: nowrap; font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: var(--sage-800); text-decoration: none; }
+    .nav-logo-photo { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; object-position: center top; flex-shrink: 0; border: 1.5px solid var(--sage-100); }
     .nav-back { font-size: 12px; color: var(--text-mid); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
     .nav-back:hover { color: var(--sage-600); }
 
@@ -52,7 +53,7 @@
 <body>
 
 <nav>
-  <a href="/" class="nav-logo">Katia Terruzzi</a>
+  <a href="/" class="nav-logo"><img src="/images/katia.webp" alt="" class="nav-logo-photo">Katia Terruzzi</a>
   <a href="/" class="nav-back">← Torna al sito</a>
 </nav>
 
