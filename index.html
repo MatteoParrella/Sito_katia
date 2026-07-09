@@ -363,6 +363,28 @@
       pointer-events: none;
     }
 
+    /* ── GALLERY ── */
+    .gallery-strip {
+      display: flex; gap: 16px; overflow-x: auto; padding: 8px 32px 24px;
+      scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin; scrollbar-color: var(--sage-200) transparent;
+    }
+    .gallery-strip::-webkit-scrollbar { height: 6px; }
+    .gallery-strip::-webkit-scrollbar-thumb { background: var(--sage-200); border-radius: var(--r-xl); }
+    .gallery-item {
+      flex: 0 0 auto; height: 320px; border-radius: var(--r-l); overflow: hidden;
+      scroll-snap-align: start; box-shadow: 0 4px 18px oklch(0% 0 0 / 0.08);
+    }
+    .gallery-item img {
+      height: 100%; width: auto; display: block; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.04); }
+    @media (max-width: 700px) {
+      .gallery-strip { padding: 8px 20px 20px; gap: 12px; }
+      .gallery-item { height: 240px; }
+    }
+
     /* ── SCHEDULE ── */
     .schedule-wrap { max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
     .sched-day {
@@ -768,6 +790,34 @@
   >
   <div class="mood-strip-overlay"></div>
 </div>
+
+<!-- ── GALLERY ── -->
+<section class="section section-alt" id="galleria">
+  <div class="container" style="padding: 0">
+    <div class="s-header-center fi" style="padding: 0 32px">
+      <p class="s-tag">Uno sguardo alle lezioni</p>
+      <h2 class="s-title">In pratica</h2>
+      <p class="s-desc">Momenti reali di allenamento: mobilità, respirazione, forza e allungamento.</p>
+    </div>
+  </div>
+  <div class="gallery-strip fi">
+    <div class="gallery-item"><img src="/images/gallery/g1.webp" alt="Esercizio di Pilates a corpo libero" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g2.webp" alt="Pilates con fitball, lavoro di stabilità" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g3.webp" alt="Allungamento dinamico durante la lezione" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g4.webp" alt="Plank, rinforzo del core" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g5.webp" alt="Esercizio con elastico per gli arti inferiori" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g6.webp" alt="Squat con elastico di resistenza" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g7.webp" alt="Stretching laterale" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g8.webp" alt="Allungamento seduta sulla fitball" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g9.webp" alt="Rilassamento con fitball" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g10.webp" alt="Esercizio di mobilità con sedia" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g11.webp" alt="Ponte con fitball, lavoro sui glutei" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g12.webp" alt="Esercizio di equilibrio sulla fitball" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g13.webp" alt="Esercizio Pilates di controllo addominale" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g14.webp" alt="Ponte con foam roller" loading="lazy"></div>
+    <div class="gallery-item"><img src="/images/gallery/g15.webp" alt="Esercizio con Pilates ring" loading="lazy"></div>
+  </div>
+</section>
 
 <!-- ── ORARI ── -->
 <section class="section section-alt" id="orari">
