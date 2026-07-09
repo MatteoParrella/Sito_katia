@@ -48,14 +48,8 @@
     }
     .topbar-left { display: flex; align-items: center; gap: 12px; }
     .topbar-logo {
-      display: flex; align-items: center; gap: 8px; flex-shrink: 0; white-space: nowrap;
       font-family: 'Cormorant Garamond', serif; font-style: italic;
       font-size: 17px; color: oklch(88% 0.018 90); text-decoration: none;
-    }
-    .topbar-logo-photo {
-      width: 26px; height: 26px; border-radius: 50%; object-fit: cover;
-      object-position: center top; flex-shrink: 0;
-      border: 1.5px solid oklch(55% 0.04 20);
     }
     .topbar-badge {
       font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
@@ -295,7 +289,7 @@
 <!-- ── TOP BAR ── -->
 <div class="topbar">
   <div class="topbar-left">
-    <a href="/" class="topbar-logo"><img src="/images/katia.webp" alt="" class="topbar-logo-photo">Katia Terruzzi</a>
+    <a href="/" class="topbar-logo">Katia Terruzzi</a>
     <span class="topbar-badge">Gestione</span>
   </div>
   <div class="topbar-right" id="topbarRight" style="display:none">
