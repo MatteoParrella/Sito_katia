@@ -243,8 +243,8 @@
       background: var(--sage-100);
     }
     .about-role {
-      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--sage-600); margin-bottom: 24px; margin-top: 4px;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--sage-700); margin-bottom: 24px; margin-top: 4px;
     }
     .about-bio {
       font-size: 15px; color: var(--text-mid); line-height: 1.85;
@@ -255,8 +255,8 @@
       font-size: clamp(20px, 2.5vw, 26px); line-height: 1.4;
       color: var(--sage-800); padding-left: 22px;
       border-left: 2px solid var(--sage-400);
+      margin-bottom: 20px;
     }
-    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
     .about-cred {
       margin-top: 72px; padding-top: 52px;
       border-top: 1px solid oklch(90% 0.055  20 / 0.45);
@@ -280,10 +280,6 @@
     }
     @media (max-width: 900px) { .about-cred-list { columns: 2; } }
     @media (max-width: 600px) { .about-cred-list { columns: 1; } .about-cred { margin-top: 52px; padding-top: 40px; } }
-    .about-tag {
-      font-size: 11px; letter-spacing: 0.06em; padding: 6px 16px;
-      border-radius: var(--r-xl); background: var(--sage-100); color: var(--sage-800);
-    }
     @media (max-width: 900px) {
       .about-grid { grid-template-columns: 1fr; gap: 40px; }
       .about-portrait { max-width: 320px; aspect-ratio: 4/3; margin: 0 auto; }
@@ -323,7 +319,7 @@
     }
 
     /* ── COURSES ── */
-    .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; max-width: 820px; margin: 0 auto; }
+    .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; max-width: 1180px; margin: 0 auto; }
     .course-card {
       background: var(--white); border-radius: var(--r-l); overflow: hidden;
       border: 1px solid oklch(90% 0.055  20 / 0.35);
@@ -590,7 +586,6 @@
       .hero-actions { flex-direction: column; align-items: stretch; }
       .btn-hero-p, .btn-hero-s { justify-content: center; padding: 15px 24px; }
       .s-header-center { margin-bottom: 44px; }
-      .about-tags { gap: 8px; }
       .about-quote { font-size: 19px; padding-left: 16px; }
       .info-bullets { gap: 24px; }
       .info-bullet-num { font-size: 32px; }
@@ -672,15 +667,12 @@
         <p class="s-tag">Chi sono</p>
         <h2 class="s-title">Katia Terruzzi</h2>
         <p class="about-role">Pilates Balanced Body® · Odaka Yoga® 250h plus · Nia® · Ginnastica Posturale</p>
-        <p class="about-bio">Sono Katia Terruzzi, istruttrice di movimento ad Arcore, in Brianza. Mi sono formata in quattro discipline complementari — Pilates Balanced Body®, Odaka Yoga®, Nia® e Ginnastica Posturale — perché credo che il benessere nasca dall'unione di precisione, consapevolezza e piacere del movimento. Ogni lezione è costruita su chi ho davanti: il corpo, la storia e le esigenze di ogni persona.</p>
+        <p class="about-bio">Sono Katia Terruzzi e insegno movimento ad Arcore, in Brianza.</p>
+        <p class="about-bio">Nel corso degli anni ho scelto di formarmi in discipline diverse — Pilates Balanced Body®, Odaka Yoga®, Nia® e Ginnastica Posturale — perché sono convinta che nessun metodo, da solo, possa rispondere alle esigenze di tutti. Per questo credo che ogni persona debba avere la possibilità di scegliere il percorso in cui si riconosce di più: si può raggiungere lo stesso obiettivo percorrendo strade diverse.</p>
+        <p class="about-bio">Credo che il movimento debba adattarsi alla persona, non il contrario, per questo non propongo lezioni standard: ogni percorso nasce dall'ascolto, dall'osservazione e dalla scelta degli strumenti più adatti all'unicità di chi ho davanti.</p>
+        <p class="about-bio">Ogni disciplina ha caratteristiche e punti di forza diversi, ma tutte condividono lo stesso obiettivo: accompagnarti verso un corpo più forte, mobile, flessibile, equilibrato e consapevole, nel pieno rispetto delle tue possibilità.</p>
+        <blockquote class="about-quote">"Non credo in un metodo migliore degli altri, ma nel metodo più adatto alla persona che ho davanti."</blockquote>
         <blockquote class="about-quote">"Non è solo esercizio. È movimento consapevole."</blockquote>
-        <div class="about-tags">
-          <span class="about-tag">Pilates Balanced Body®</span>
-          <span class="about-tag">Odaka Yoga® 250h plus</span>
-          <span class="about-tag">Nia®</span>
-          <span class="about-tag">Ginnastica Posturale</span>
-          <span class="about-tag">Piccoli gruppi</span>
-        </div>
       </div>
     </div>
     <div class="about-cred fi d3">
@@ -693,7 +685,7 @@
         <li>Odaka Yoga® 250h plus</li>
         <li>Odaka Yoga® Trauma Informed</li>
         <li>Odaka Yoga® The Art of Adjustment</li>
-        <li>Istruttore livello 1 e 2 — Tecnico Specialista in Ginnastica Educativa e Rieducativa</li>
+        <li>Istruttore di Ginnastica Posturale — III livello</li>
         <li>Nia® Technique White Belt Intensive Training</li>
         <li>Nia® Moving to Heal Training</li>
         <li>Nia® DJ's Freedance Training</li>
@@ -715,28 +707,28 @@
     <div class="s-header-center fi">
       <p class="s-tag">Il metodo</p>
       <h2 class="s-title">Le discipline</h2>
-      <p class="s-desc">Quattro approcci complementari al movimento, per lavorare su corpo e mente in modo completo.</p>
+      <p class="s-desc">Quattro modi diversi di vivere il movimento, un unico obiettivo: aiutarti a trovare il percorso più adatto a te, lavorando sull'interazione tra corpo e mente. Vivrai l'esperienza di lezioni a corpo libero, imparando a posizionarti correttamente, e con l'utilizzo di piccoli attrezzi (palle di diverse dimensioni, fasce, bosu, cerchi, pesetti...).</p>
     </div>
     <div class="disc-grid">
       <div class="disc-card fi d1">
         <span class="disc-num">01</span>
         <h3 class="disc-name">Pilates Balanced Body®</h3>
-        <p class="disc-desc">Respirazione, allineamento della colonna e controllo del centro. Qualità del movimento prima della quantità — adatto dai principianti agli avanzati, anche per il recupero da infortuni e una postura sana.</p>
+        <p class="disc-desc">Scelgo il Pilates quando l'obiettivo è migliorare forza, stabilità, controllo del movimento e consapevolezza corporea, per rendere il corpo più efficiente e migliorare la qualità del movimento nella vita di tutti i giorni.</p>
       </div>
       <div class="disc-card fi d2">
         <span class="disc-num">02</span>
         <h3 class="disc-name">Odaka Yoga®</h3>
-        <p class="disc-desc">Stile contemporaneo nato dalla visione di Roberto Milletti e Francesca Cassia. Ascolto del corpo, biomeccanica della colonna e lavoro sul tessuto connettivo, per fluidità e mobilità profonda.</p>
+        <p class="disc-desc">Scelgo l'Odaka Yoga® quando l'obiettivo è ritrovare fluidità, mobilità e armonia, con particolare attenzione alla colonna vertebrale. Attraverso il respiro e sequenze ispirate al movimento delle onde, ritroviamo un corpo naturalmente più flessibile.</p>
       </div>
       <div class="disc-card fi d3">
         <span class="disc-num">03</span>
         <h3 class="disc-name">Nia®</h3>
-        <p class="disc-desc">Movimento sensoriale e allenamento cardiovascolare consapevole. Musica e movimenti organici per tonicità, equilibrio, flessibilità e agilità — adattabile a ogni condizione fisica.</p>
+        <p class="disc-desc">Scelgo il Nia® quando l'obiettivo è riscoprire il piacere di muoversi attraverso la musica. Le lezioni migliorano coordinazione, stabilità, forza e resistenza cardiovascolare, stimolando espressività, creatività e benessere.</p>
       </div>
       <div class="disc-card fi d4">
         <span class="disc-num">04</span>
         <h3 class="disc-name">Ginnastica Posturale</h3>
-        <p class="disc-desc">Allenamento a circuito basato su allineamento posturale e respirazione diaframmatica, personalizzato sulle esigenze di ognuno e sulle eventuali indicazioni di medico, fisioterapista od osteopata.</p>
+        <p class="disc-desc">Scelgo la Ginnastica Posturale quando l'obiettivo è migliorare la postura, la percezione del proprio corpo nello spazio intorno a noi, attraverso esercizi mirati e un lavoro consapevole sul respiro. Le lezioni sono costruite sulle esigenze individuali e, quando necessario, nel rispetto delle indicazioni del medico.</p>
       </div>
     </div>
   </div>
@@ -748,7 +740,7 @@
     <div class="s-header-center fi">
       <p class="s-tag">I corsi</p>
       <h2 class="s-title">Scegli il tuo percorso</h2>
-      <p class="s-desc">Due proposte in piccoli gruppi — massimo 12 persone — per un'attenzione sempre personalizzata, in un'atmosfera serena e accogliente.</p>
+      <p class="s-desc">Lezioni in piccoli gruppi — massimo 12 persone — o percorsi privati su misura, per un'attenzione sempre personalizzata, in un'atmosfera serena e accogliente.</p>
     </div>
     <div class="courses-grid">
       <div class="course-card fi d1">
@@ -779,6 +771,21 @@
           <p class="course-desc">Ogni settimana una disciplina diversa, a rotazione: <strong>Pilates</strong>, <strong>Odaka Yoga</strong>, <strong>Nia</strong> o <strong>Ginnastica Posturale</strong> con allenamento a circuito. Un programma vario che lavora su allineamento posturale, respirazione, mobilità, coordinazione, energia e benessere globale del corpo.</p>
           <p class="course-benefit">Varietà, equilibrio e benessere globale</p>
           <a href="#prenota" class="btn-book">Prenota →</a>
+        </div>
+      </div>
+      <div class="course-card fi d3">
+        <div class="course-card-img">
+          <img
+            src="/images/gallery/g13.webp"
+            alt="Lezione privata individuale"
+            loading="lazy"
+          >
+        </div>
+        <div class="course-card-body">
+          <h3 class="course-name">Lezioni Private</h3>
+          <p class="course-desc">Un percorso costruito solo su di te: singola, in duetto o in trio. Massima attenzione, ritmo e obiettivi personalizzati, con orari flessibili su richiesta.</p>
+          <p class="course-benefit">Attenzione esclusiva, su misura per te</p>
+          <a href="https://wa.me/393485525084" target="_blank" rel="noopener" class="btn-book">Scrivimi su WhatsApp →</a>
         </div>
       </div>
     </div>
@@ -992,7 +999,8 @@
 </section>
 
 <footer>
-  <p>© 2026 Katia Terruzzi — Pilates e Movimento Consapevole · Arcore, Monza e Brianza · P.IVA 12188400969 · Tutti i diritti riservati</p>
+  <p>Vuoi proporre una collaborazione? <a href="mailto:katiaterruzzi@gmail.com" style="color:oklch(65% 0.05 20)">Contattami</a></p>
+  <p style="margin-top:10px">© 2026 Katia Terruzzi — Pilates e Movimento Consapevole · Arcore, Monza e Brianza · P.IVA 12188400969 · Tutti i diritti riservati</p>
   <p style="margin-top:6px"><a href="/privacy" style="color:oklch(55% 0.04 20)">Privacy Policy</a></p>
 </footer>
 
